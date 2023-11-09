@@ -1,2 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿/*
+ Integrantes:
+
+ 	Hualpa, Gaston
+	Cruz Noelia
+	Coronel Luis Edgardo 
+	Vázquez Exequiel 
+ 
+ 
+ */
