@@ -12,20 +12,24 @@ namespace TP_Integrador
         protected static int IdStatic=0;            //Atributo estatico,inicializado en 0
         protected int Id,CargaMax,CargaActual;
         protected String Localizacion,Cuartel;
+
         protected Bateria Bateria;
+        protected CargaOperador CapacidadCarga;
         protected EstadoOperador Estado;
+
         protected double velocidad;
 
 
 
 
-        public Operador(String Localizacion, TamañoBateria capacidadBateria) {
+        public Operador(String Localizacion, TamañoBateria capacidadBateria, CargaOperador CapacidadCarga) {
             this.Id = IdStatic;                    //Cada vez que se cree un objeto Operador, se le asigana el Id automaticamente
             IdStatic++;                           //La variable estatica incrementa automaticamente para asignarle otro Id diferente
             this.Localizacion = Localizacion;     //al siguiente Operador que se cree
             this.Estado = EstadoOperador.Activo;
             this.CargaActual = 0;
             this.Bateria = new Bateria(capacidadBateria);
+            this.CargaMax = (int)CapacidadCarga;
         }
 
 
