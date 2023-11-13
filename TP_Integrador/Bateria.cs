@@ -10,6 +10,7 @@ namespace TP_Integrador
     {
         private int bateriaMaxima;
         private int bateriaActual;
+        public EstadoBateria estado;
 
 
 
@@ -17,6 +18,7 @@ namespace TP_Integrador
         {
             this.bateriaMaxima = (int)bateriaMaxima;
             this.bateriaActual = (int)bateriaMaxima; // Inicializar la carga actual como la capacidad máxima al principio
+            this.estado = EstadoBateria.BuenEstado;
         }
 
 
@@ -65,6 +67,37 @@ namespace TP_Integrador
         {
             bateriaActual = bateriaMaxima;
         }
+
+
+        
+
+
+
+
+        public void BateriaDañada()
+        {
+            this.estado = EstadoBateria.Dañada;
+        }
+
+
+
+
+
+
+        public EstadoBateria SetEstadoBateria()
+        {
+            return this.estado;
+        }
+
+
+
+
+
+
+
+
+
+
 
 
     }

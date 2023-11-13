@@ -72,7 +72,7 @@ namespace TP_Integrador
 
 
 
-
+        //analizar si se puede mover a clase bateria
         public void transferirCargar(Operador op2, int carga)  //Transfiere en kg la carga actual de nuestro Operador a otro Operador op2
         {
             if (this.Localizacion.CompareTo(op2.getLocalizacion) == 0)
@@ -116,6 +116,21 @@ namespace TP_Integrador
         }
 
 
+
+
+
+        //ver esta funcion
+        public void ReemplazarBateria(TamañoBateria capacidadBateria)
+        {
+            if(Bateria.estado == EstadoBateria.Dañada)
+            {
+                Bateria = new Bateria(capacidadBateria);
+            }
+            else
+            {
+                Console.WriteLine("La bateria se encuentra en buen estado!");
+            }
+        }
 
 
 
