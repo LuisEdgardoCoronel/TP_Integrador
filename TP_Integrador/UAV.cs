@@ -8,9 +8,9 @@ namespace TP_Integrador
 {
     internal class UAV : Operador
     {
-       public UAV (String Localizacion) : base(Localizacion)
+       public UAV (String Localizacion) : base(Localizacion, TamañoBateria.pequeña)
         {
-            this.BateriaMax = 4000;
+            
             this.CargaMax = 5;
             this.velocidad = 80;
             
