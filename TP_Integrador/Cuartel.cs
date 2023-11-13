@@ -82,7 +82,7 @@ namespace TP_Integrador
 
             if (posicion >= 0)
             {
-                this.Operadores[posicion].setEstado("StandBy");
+                this.Operadores[posicion].setEstado(EstadoOperador.StandBy);
             }
             else
             {

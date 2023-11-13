@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace TP_Integrador
 {
-    internal class EstadoOperador
+    public enum EstadoOperador
     {
+        Activo,
+        StandBy
     }
 }
