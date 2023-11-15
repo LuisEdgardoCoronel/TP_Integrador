@@ -8,10 +8,10 @@ namespace TP_Integrador
 {
     internal class M8 : Operador
     {
-        public M8(String Localizacion) : base(Localizacion)
+        public M8(String Localizacion) : base(Localizacion, TamañoBateria.grande, CargaOperador.Alta)
         {
-            this.BateriaMax = 12250;
-            this.CargaMax = 250;
+
+            
             this.velocidad = 110;
 
         }

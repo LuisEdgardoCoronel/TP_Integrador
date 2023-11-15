@@ -8,10 +8,10 @@ namespace TP_Integrador
 {
     internal class K9 : Operador
     {
-        public K9(String Localizacion) : base(Localizacion)
+        public K9(String Localizacion) : base(Localizacion, TamañoBateria.mediana, CargaOperador.Media)
         {
-            this.BateriaMax = 6500;
-            this.CargaMax = 40;
+
+            
             this.velocidad = 100;
 
         }
