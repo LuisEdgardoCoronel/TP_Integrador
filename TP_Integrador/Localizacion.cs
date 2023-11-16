@@ -28,6 +28,11 @@ namespace TP_Integrador
             this.columna = columna;
         }
 
+        public bool equals(Localizacion local2) ///metodo nuevo para comparar localizaciones
+        {
+            return (this.fila == local2.getFila() && this.columna == local2.getColumna());
+        }
+
 
 
     }
