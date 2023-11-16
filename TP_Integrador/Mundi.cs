@@ -8,7 +8,7 @@ namespace TP_Integrador
 {
     internal class Mundi
     {
-        private const int max = 1000; /// valor maximo del mundo 
+      
 
         /// El atributo matriz representa el laberinto  por medio de Vertices que en realidad le corresponden a la clase Nodo
 
@@ -41,13 +41,21 @@ namespace TP_Integrador
 
         private int n;
 
+
+        private List<Cuartel> cuarteles;
+
+        private List<SitioReciclaje> sitiosReciclaje;
         /// Constructor 
 
         public Mundi()
         {
-            matriz = new Nodo[max, max];
-            distancia = new int[max, max];
+            Console.WriteLine("Introduzca el tamaño del Mundo");
+            n = int.Parse(Console.ReadLine());
+            matriz = new Nodo[n+2, n+2]; //se suma +2,para permitir realiazr consultas adyacentes y no desborde la matriz
+            distancia = new int[n+2, n+2];//idem anterior caso
             cola = new Queue<Nodo>();
+            cuarteles = new List<Cuartel>();
+            sitiosReciclaje = new List<SitioReciclaje> ();
 
         }
 
@@ -57,12 +65,9 @@ namespace TP_Integrador
 
         public void cargarMundi()
         {
-            Console.WriteLine("Introduzca el tamaño del Mundo");
-            n = int.Parse(Console.ReadLine());
-
-
+            
             ///iniciamos en el indice 1, dejando el indice 0 para hacer consultas en las adyacencias
-            Random randy = new Random();
+         
 
             for (int i = 1; i <= n; i++)
             {
@@ -71,25 +76,70 @@ namespace TP_Integrador
                 //recorremos cada carecter de la cadena leida
                 for (int j = 1; j <= n; j++)
                 {
-                    int rand = randy.Next(0, 2);
                     Nodo nodo = new Nodo();
-                    if (rand == 0) tipo = 'X';
-                    else tipo = 'P';
-                    nodo.setTipo(tipo);
+                    Terreno tipoTerreno = terrenoRandom(i,j);
+                    nodo.setTipo(tipoTerreno);
                     nodo.setFila(i);
                     nodo.setColumna(j);
                     nodo.setVisitado(false);
 
-                    matriz[i, j] = nodo;
+                    this.matriz[i, j] = nodo;
                 }
             }
 
         }
 
+        private Terreno terrenoRandom(int i, int j)  //devuelve una clase de terreno determinado de manera aleatori
+        {                                            //recibe ademas 2 enteros, i y j, por si se debe crear un cuartel o sitiosreciclaje
+            Random rnd = new Random();
+            Terreno terreno;
+
+            do
+            {
+                int tipo = rnd.Next(0, 9);
+                terreno = creaTerreno(tipo,i,j);
+
+            } while ((terreno is Cuartel && this.cuarteles.Count()>=3)||(terreno is SitioReciclaje && this.sitiosReciclaje.Count()>=5));
+
+            if (terreno is Cuartel) this.cuarteles.Add((Cuartel)terreno);
+            if (terreno is SitioReciclaje) this.sitiosReciclaje.Add((SitioReciclaje)terreno);
+            return terreno;
+        }
+
+        private Terreno creaTerreno(int tipo,int i,int j) //metodo para modularizar la manera de crear un tipo de terreno a partir de 
+        {                                                 //un numero random y 2 enteros necesarios para crear cuartel y sitioreciclaje
+            Terreno terreno;
+            switch (tipo)
+            {
+                case 0: terreno = new Baldio();
+                    break;
+                case 1: terreno = new Planicie();
+                    break;
+                case 2: terreno = new Bosque();
+                    break;
+                case 3: terreno = new Urbano();
+                    break;
+                case 4: terreno = new Vertedero();
+                    break;
+                case 5: terreno = new Lago();
+                    break;
+                case 6: terreno = new VertederoElectronico();
+                    break;
+                case 7: terreno = new Cuartel(i,j);
+                    break;
+                case 8: terreno = new SitioReciclaje(i,j);
+                    break;
+                    default: return null;
+            } 
+
+            return terreno;
+        }
 
 
-        public Stack<Nodo> devolverCamino() {
-            
+        public Stack<Nodo> devolverCamino(int inicioF, int inicioC, int finF, int finC) {
+
+            setInicio(inicioF, inicioC);
+            setFin(finF, finC);
 
             recorrido();
             Stack<Nodo> pila = new Stack<Nodo>();
@@ -113,20 +163,18 @@ namespace TP_Integrador
         {
             matriz[i, j].setFila(i);
             matriz[i, j].setColumna(j);
-            matriz[i, j].setTipo('I');
             this.inicio = matriz[i, j];
         }
         private void setFin(int i, int j)
         {
             matriz[i, j].setFila(i);
             matriz[i, j].setColumna(j);
-            matriz[i, j].setTipo('S');
             this.fin = matriz[i, j];
         }
 
         private void recorrido()
         {
-
+            
 
             //iniciamos la distnaica del nodo inicio en cero
             distancia[inicio.getFila(), inicio.getColumna()] = 0;
@@ -149,7 +197,7 @@ namespace TP_Integrador
                     //dy y dx nos ayudan a solamente sumar +1,-1 o 0 tanto en fila o columna para los cuatro vertices adycentes
                     Nodo nodoAdy = matriz[nodoActual.getFila() + dy[i], nodoActual.getColumna() + dx[i]];
                     // si el nodo no es null , no ha sido visitado... si es un camino valido o es la salida
-                    if (nodoAdy != null && !nodoAdy.isVisitado() && (nodoAdy.getTipo() == 'X' || nodoAdy.getTipo() == 'S'))
+                    if (nodoAdy != null && !nodoAdy.isVisitado() && (nodoAdy.getTipo() == 'X' || nodoAdy == this.fin))
                     {
                         //marcamos como visitado
 
@@ -162,7 +210,7 @@ namespace TP_Integrador
                         cola.Enqueue(nodoAdy);
 
                         //si hemos llegado a la salida o al objetivo... no terminamos de recorrer TODO el grafo, y la paramos ahi
-                        if (nodoAdy.getTipo() == 'S')
+                        if (nodoAdy == this.fin)
                         {
 
                             break;
