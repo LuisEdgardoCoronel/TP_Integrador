@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +8,15 @@ namespace TP_Integrador
 {
     internal class UAV : Operador
     {
-       public UAV (String Localizacion) : base(Localizacion, TamañoBateria.pequeña, CargaOperador.Baja)
+       public UAV (Localizacion localizacion) : base(localizacion)
         {
-            
-           
+            this.BateriaMax = 4000;
+            this.CargaMax = 5;
             this.velocidad = 80;
             
         }
 
-
+       
     }
     }
 
