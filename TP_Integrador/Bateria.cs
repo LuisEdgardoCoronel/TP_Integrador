@@ -35,7 +35,7 @@ namespace TP_Integrador
 
         public void CargarBateria(int cantidad)
         {
-            if (cantidad > 0 && bateriaActual + cantidad <= bateriaMaxima)
+            if ((cantidad > 0) && (bateriaActual + cantidad <= bateriaMaxima))
             {
                 bateriaActual += cantidad;
             }
@@ -69,22 +69,17 @@ namespace TP_Integrador
         }
 
 
-        
 
 
-
-
-        public void BateriaDañada()
+        public void SetEstadoBateria(EstadoBateria estado)
         {
-            this.estado = EstadoBateria.Dañada;
+            this.estado=estado;
         }
 
 
 
 
-
-
-        public EstadoBateria SetEstadoBateria()
+        public EstadoBateria GetEstadoBateria()
         {
             return this.estado;
         }

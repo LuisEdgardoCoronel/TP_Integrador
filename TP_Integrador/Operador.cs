@@ -13,7 +13,8 @@ namespace TP_Integrador
         protected int Id,CargaMax,CargaActual;
         protected String Localizacion,Cuartel;
 
-        protected Bateria Bateria;
+        protected Bateria Bateria;//poner en private
+
         protected CargaOperador CapacidadCarga;
         protected EstadoOperador Estado;
 
@@ -46,7 +47,10 @@ namespace TP_Integrador
 
         public void transferirBateria(Operador op2, int bateria)  //Transfiere una cantidad en Amh desde nuestro Operador a otro Operador op2
         {
-            if (this.Bateria.ObtenerCargaActual() > 0 && (this.Localizacion.CompareTo(op2.getLocalizacion) == 0))
+            if (this.Bateria.ObtenerCargaActual() > 0 && 
+                (this.Localizacion.CompareTo(op2.getLocalizacion) == 0)&&//misma localizacion?
+                (this.Bateria.GetEstadoBateria() != EstadoBateria.PuertoDesconectado)//que no esté dañada
+                )
             {
                 this.Bateria.DescargarBateria(bateria);//descargar bateria de un operador
                 op2.Bateria.CargarBateria(bateria);//cargar bateria del otro operador
@@ -55,10 +59,19 @@ namespace TP_Integrador
         }
 
 
+
+
         public void cargarBateriaEnCuartel()           //Indica al operador que se desplace hacia su cuartel y carga su bateria al maximo
         {
-            volverAlCuartel();
-            this.Bateria.RecargarBateriaCompleta();
+            if (this.Bateria.GetEstadoBateria() != EstadoBateria.PuertoDesconectado)//coontrolar si tiene el daño "puerto desconectado"
+            {
+                volverAlCuartel();
+                this.Bateria.RecargarBateriaCompleta();
+            }
+            else
+            {
+                Console.WriteLine("El operador se encuentra dañado, el Puerto de la bateria está desconectado");
+            }
         }
 
 
@@ -122,7 +135,7 @@ namespace TP_Integrador
         //ver esta funcion
         public void ReemplazarBateria(TamañoBateria capacidadBateria)
         {
-            if(Bateria.estado == EstadoBateria.Dañada)
+            if(Bateria.estado != EstadoBateria.BuenEstado)
             {
                 Bateria = new Bateria(capacidadBateria);
             }
@@ -157,23 +170,33 @@ namespace TP_Integrador
             this.Estado = estado;
         }
 
-        
-        
-       /* public void setBateria(int bateria)
-        {
-            int bat = this.BateriaActual + bateria;
 
-            if(bat > this.BateriaMax)
+
+        /* public void setBateria(int bateria)
+         {
+             int bat = this.BateriaActual + bateria;
+
+             if(bat > this.BateriaMax)
+             {
+                 this.BateriaActual = this.BateriaMax;
+             }
+             else
+             {
+                 this.BateriaActual = bat;
+             }
+         }
+
+         */
+        public void CambiarEstadoBateria(EstadoBateria nuevoEstado)
+        {
+            if (Bateria != null)
             {
-                this.BateriaActual = this.BateriaMax;
-            }
-            else
-            {
-                this.BateriaActual = bat;
+                Bateria.SetEstadoBateria(nuevoEstado);
             }
         }
 
-        */
+
+
 
         public void setCarga(int carga) { 
             

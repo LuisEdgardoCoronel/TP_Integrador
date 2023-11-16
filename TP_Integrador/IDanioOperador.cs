@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace TP_Integrador
 {
-    public enum EstadoBateria
+    interface IDanioOperador
     {
-        BuenEstado,
-        Perforada,
-        PuertoDesconectado
+        void ProducirDanio(Operador operador);
     }
 }
