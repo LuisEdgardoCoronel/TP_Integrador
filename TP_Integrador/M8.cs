@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +8,10 @@ namespace TP_Integrador
 {
     internal class M8 : Operador
     {
-        public M8(String Localizacion) : base(Localizacion, TamañoBateria.grande, CargaOperador.Alta)
+        public M8(Localizacion localizacion) : base(localizacion)
         {
-
-            
+            this.BateriaMax = 12250;
+            this.CargaMax = 250;
             this.velocidad = 110;
 
         }
