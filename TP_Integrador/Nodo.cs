@@ -11,9 +11,8 @@ namespace TP_Integrador
         private int fila;
         private int columna;
 
-        /// tipo de Vertic, 'I'->Punto de inicio(partida), 'S'->Punto final(Salida), 'P'->No se puede pasar,  'X'->CAMINO VALIDO, UN ESPACIO YA ES LA RUTA ENCONTRADA
-
-        private char tipo;
+        /// tipo de Vertic, 'I'->Punto de inicio(partida), 'S'->Punto final(Salida), 'P'->No se puede pasar,  'X'->CAMINO VALIDO
+        private Terreno tipo;
 
         /// Indica si el nodo ya ha sido visitado
 
@@ -43,14 +42,14 @@ namespace TP_Integrador
             this.columna = columna;
         }
 
-        public char getTipo()
+        public Terreno getTipo()
         {
             return tipo;
         }
 
-        public void setTipo(char tipo)
+        public void setTipo(Terreno terreno)
         {
-            this.tipo = tipo;
+            this.tipo = terreno;
         }
 
         public bool isVisitado()
