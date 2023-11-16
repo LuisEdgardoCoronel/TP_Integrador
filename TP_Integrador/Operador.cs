@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -10,72 +10,46 @@ namespace TP_Integrador
     internal abstract class Operador
     {
         protected static int IdStatic=0;            //Atributo estatico,inicializado en 0
-        protected int Id,CargaMax,CargaActual;
-        protected String Localizacion,Cuartel;
-
-        protected Bateria Bateria;
-        protected CargaOperador CapacidadCarga;
-        protected EstadoOperador Estado;
-
+        protected int Id,BateriaMax,CargaMax,CargaActual,BateriaActual;
+        protected String Estado;
+        protected Localizacion localizacion;
+        protected Localizacion localizacionCuartel;
         protected double velocidad;
 
+        public Operador(Localizacion localizacion) {    //Se crea Operador, recibiendo la localizacion del Cuartel donde se crea
 
-
-
-        public Operador(String Localizacion, TamañoBateria capacidadBateria, CargaOperador CapacidadCarga) {
             this.Id = IdStatic;                    //Cada vez que se cree un objeto Operador, se le asigana el Id automaticamente
             IdStatic++;                           //La variable estatica incrementa automaticamente para asignarle otro Id diferente
-            this.Localizacion = Localizacion;     //al siguiente Operador que se cree
-            this.Estado = EstadoOperador.Activo;
+                                                  //al siguiente Operador que se cree
+            this.localizacion = localizacion;             ///Indicamos la localizacion donde se crea el operador
+            this.localizacionCuartel = this.localizacion; /// Asignamos ademas la localzacin de su cuartel correspondiente
+            this.Estado = "Disponible";
             this.CargaActual = 0;
-            this.Bateria = new Bateria(capacidadBateria);
-            this.CargaMax = (int)CapacidadCarga;
+            this.BateriaActual = this.BateriaMax;
         }
 
-
-
-
-        public void moverse(String Localizacion)
+        public void moverse(Localizacion Localizacion)
         {
             //falta implementacion por falta de info sobre las distancia ente localizaciones
         }
 
-
-
-
-
         public void transferirBateria(Operador op2, int bateria)  //Transfiere una cantidad en Amh desde nuestro Operador a otro Operador op2
         {
-            if (this.Bateria.ObtenerCargaActual() > 0 && (this.Localizacion.CompareTo(op2.getLocalizacion) == 0))
+            if (this.BateriaActual > 0 && (this.localizacion.equals(op2.getLocalizacion()))) ///Correcion: se cambio comparar ubicaciones
             {
-                this.Bateria.DescargarBateria(bateria);//descargar bateria de un operador
-                op2.Bateria.CargarBateria(bateria);//cargar bateria del otro operador
+                if (bateria <= this.BateriaActual)
+                {
+                    this.BateriaActual -= bateria;
+                    op2.setBateria(bateria);
+                }
+                else Console.WriteLine("No es posible realizar la transferencia de bateria.");
             }
             else Console.WriteLine("No es posible realizar la transferencia de bateria porque no estan en la misma localizacion");
         }
 
-
-        public void cargarBateriaEnCuartel()           //Indica al operador que se desplace hacia su cuartel y carga su bateria al maximo
-        {
-            volverAlCuartel();
-            this.Bateria.RecargarBateriaCompleta();
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-        //analizar si se puede mover a clase bateria
         public void transferirCargar(Operador op2, int carga)  //Transfiere en kg la carga actual de nuestro Operador a otro Operador op2
         {
-            if (this.Localizacion.CompareTo(op2.getLocalizacion) == 0)
+            if (this.localizacion.Equals(op2.getLocalizacion())) ///se cambio la comparacion
             {
                 int c = op2.getCargaActual() + carga;
 
@@ -90,76 +64,43 @@ namespace TP_Integrador
             else Console.WriteLine("No es posible realizar la transferencia de carga porque no estan en la misma localizacion");
         }
 
-
-
-
-
         public void descargarEnCuartel()    //Descarga la carga actual en el cuartel
         {
             volverAlCuartel();
             this.CargaActual = 0;
         }
 
-
-
-
         public void volverAlCuartel()      //Indica al Operador que se desplace a su Cuartel correspondiente
         {
-            if (this.Localizacion.CompareTo(this.Cuartel) != 0)
+            if (this.localizacion.equals(this.localizacionCuartel)) ///Mofificacion: pregunta si ya se encuentra en el cuartel
             {
-                if (this.Cuartel != null)
-                    moverse(this.Cuartel);
-                else Console.WriteLine("No es posible. No tiene un Cuartel asignado.");
+                
+                    moverse(this.localizacionCuartel);
+                
             }
             else Console.WriteLine("Ya se encuentra en el cuartel.");
 
         }
 
-
-
-
-
-        //ver esta funcion
-        public void ReemplazarBateria(TamañoBateria capacidadBateria)
+        public void cargarBateriaEnCuartel()           //Indica al operador que se desplace hacia su cuartel y carga su bateria al maximo
         {
-            if(Bateria.estado == EstadoBateria.Dañada)
-            {
-                Bateria = new Bateria(capacidadBateria);
-            }
-            else
-            {
-                Console.WriteLine("La bateria se encuentra en buen estado!");
-            }
+            volverAlCuartel();
+            this.BateriaActual = this.BateriaMax;
         }
 
-
-
-
-
-
-
-
-
-        /*
-         * 
-         * Hacia abajo se encuentran algunos getters y setters necesarios
-         * 
-         */
-
-
-        public EstadoOperador getEstado()                      
+        public String getEstado()                      //Hacia abajo se encuentran algunos getters y setters necesarios
         {
             return this.Estado;
         }
 
-        public void setEstado(EstadoOperador estado)
+        public void setEstado(String estado)
         {
             this.Estado = estado;
         }
 
         
         
-       /* public void setBateria(int bateria)
+        public void setBateria(int bateria)
         {
             int bat = this.BateriaActual + bateria;
 
@@ -173,7 +114,7 @@ namespace TP_Integrador
             }
         }
 
-        */
+        
 
         public void setCarga(int carga) { 
             
@@ -191,36 +132,18 @@ namespace TP_Integrador
             return this.CargaMax;
         }
 
-        public String getLocalizacion()
+        public Localizacion getLocalizacion()
         {
-            return this.Localizacion;
+            return this.localizacion;
         }
 
 
-        public void setCuartel(String cuartel)
-        {
-            this.Cuartel = cuartel;
-        }
+        ///se elimino meotodo para setear cuartel a un operador ya que no esncesario
 
         public int getId()
         {
             return this.Id;
         }
 
-       
-        
-        
-
-
-
-
-
-
-
-
-
-
     }
-
-
 }
