@@ -8,23 +8,23 @@ namespace TP_Integrador
 {
     internal class Bateria
     {
-        private int bateriaMaxima;
-        private int bateriaActual;
+        private double bateriaMaxima;
+        private double bateriaActual;
         public EstadoBateria estado;
 
 
 
         public Bateria(TamañoBateria bateriaMaxima)
         {
-            this.bateriaMaxima = (int)bateriaMaxima;
-            this.bateriaActual = (int)bateriaMaxima; // Inicializar la carga actual como la capacidad máxima al principio
+            this.bateriaMaxima = (double)bateriaMaxima;
+            this.bateriaActual = (double)bateriaMaxima; // Inicializar la carga actual como la capacidad máxima al principio
             this.estado = EstadoBateria.BuenEstado;
         }
 
 
 
 
-        public int ObtenerCargaActual()
+        public double ObtenerCargaActual()
         {
             return bateriaActual;
         }
@@ -86,13 +86,26 @@ namespace TP_Integrador
 
 
 
+        public void DescargaPorMovimiento(double velocidad)
+        {
+            if (estado == EstadoBateria.Perforada)
+            {
+                bateriaActual -= 1000 / (5 * velocidad);
+            }
+            else
+            {
+                bateriaActual -= 1000 / velocidad;
+            }
+            
+        }
 
 
-
-
-
-
-
+        //carga reducida por vertedero electronico
+        public void ReducirCarga()
+        {
+            bateriaMaxima *= 0.2;
+            if (bateriaActual > bateriaMaxima) bateriaActual = bateriaMaxima; 
+        }
 
 
     }
