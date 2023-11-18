@@ -10,6 +10,7 @@ namespace TP_Integrador
     {
         BuenEstado,
         Perforada,
-        PuertoDesconectado
+        PuertoDesconectado,
+        CargaReducida
     }
 }
