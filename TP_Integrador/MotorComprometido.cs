@@ -10,7 +10,7 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
-            //reducir velocidad a la mitad
+            operador.setEstado(EstadoOperador.MotorComprometido);
         }
     }
 }

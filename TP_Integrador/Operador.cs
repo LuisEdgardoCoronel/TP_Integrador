@@ -28,7 +28,7 @@ namespace TP_Integrador
             this.Id = IdStatic;                    //Cada vez que se cree un objeto Operador, se le asigana el Id automaticamente
             IdStatic++;                           //La variable estatica incrementa automaticamente para asignarle otro Id diferente
             this.Localizacion = Localizacion;     //al siguiente Operador que se cree
-            this.Estado = EstadoOperador.Activo;
+            this.Estado = EstadoOperador.BuenEstado;
             this.CargaActual = 0;
             this.Bateria = new Bateria(capacidadBateria);
             this.CargaMax = (int)CapacidadCarga;
@@ -45,10 +45,12 @@ namespace TP_Integrador
 
         public void moverse(String Localizacion)
         {
+            double vel;
             //falta implementacion por falta de info sobre las distancia ente localizaciones
+            if (Estado == EstadoOperador.MotorComprometido) vel = this.velocidad / 2;
+            else vel = this.velocidad;
 
-
-            Bateria.DescargaPorMovimiento(this.velocidad);//descarga cada vez que se mueve
+            Bateria.DescargaPorMovimiento(vel);//descarga cada vez que se mueve
 
             if ()//vertedero
             {

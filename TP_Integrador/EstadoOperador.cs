@@ -8,7 +8,9 @@ namespace TP_Integrador
 {
     public enum EstadoOperador
     {
-        Activo,
-        StandBy
+        BuenEstado,
+        StandBy,
+        MotorComprometido,
+        ServoAtascado
     }
 }
