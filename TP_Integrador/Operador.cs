@@ -36,10 +36,17 @@ namespace TP_Integrador
 
    
 
+        /*
+         * ------------------------------------------
+         *         funciones movimiento
+         * ------------------------------------------
+         */
+
 
         public void moverse(String Localizacion)
         {
             //falta implementacion por falta de info sobre las distancia ente localizaciones
+
 
             Bateria.DescargaPorMovimiento(this.velocidad);//descarga cada vez que se mueve
 
@@ -57,6 +64,37 @@ namespace TP_Integrador
             }
         }
 
+
+        public void volverAlCuartel()      //Indica al Operador que se desplace a su Cuartel correspondiente
+        {
+            if (this.Localizacion.CompareTo(this.Cuartel) != 0)
+            {
+                if (this.Cuartel != null)
+                    moverse(this.Cuartel);
+                else Console.WriteLine("No es posible. No tiene un Cuartel asignado.");
+            }
+            else Console.WriteLine("Ya se encuentra en el cuartel.");
+
+        }
+
+
+        /*
+         * ------------------------------------------
+         *        fin funciones movimiento
+         * ------------------------------------------
+         */
+
+
+
+
+
+
+
+        /*
+         * -----------------------------------
+         *          funciones bateria
+         * -----------------------------------
+         */
 
 
 
@@ -90,19 +128,62 @@ namespace TP_Integrador
             }
         }
 
+        //ver esta funcion
+        public void ReemplazarBateria(TamañoBateria capacidadBateria)
+        {
+            if (Bateria.estado != EstadoBateria.BuenEstado)
+            {
+                Bateria = new Bateria(capacidadBateria);
+            }
+            else
+            {
+                Console.WriteLine("La bateria se encuentra en buen estado!");
+            }
+        }
+
+        public void CambiarEstadoBateria(EstadoBateria nuevoEstado)
+        {
+            if (Bateria != null)
+            {
+                Bateria.SetEstadoBateria(nuevoEstado);
+            }
+        }
+
+
+        /*
+         * -----------------------------------
+         *         fin funciones bateria
+         * -----------------------------------
+         */
 
 
 
 
-        //carga fisica del operador
+
+
+        //----------------------------
+        //  carga fisica del operador
+        //----------------------------
+
+
+        public void RecargaCargaMax()
+        {
+            this.CargaActual = this.CargaMax;
+        }
+
+
+        public void RecargarCargaFisica(int carga)
+        {
+            if (this.CargaActual<this.CargaMax && (this.CargaActual+carga) <= this.CargaMax)
+            {
+                this.CargaActual += carga;
+            }
+        }
 
 
 
-
-
-
-        //analizar si se puede mover a clase bateria
-        public void transferirCargar(Operador op2, int carga)  //Transfiere en kg la carga actual de nuestro Operador a otro Operador op2
+        
+        public void TransferirCargar(Operador op2, int carga)  //Transfiere en kg la carga actual de nuestro Operador a otro Operador op2
         {
             if (this.Localizacion.CompareTo(op2.getLocalizacion) == 0)
             {
@@ -129,37 +210,9 @@ namespace TP_Integrador
             this.CargaActual = 0;
         }
 
-
-
-
-        public void volverAlCuartel()      //Indica al Operador que se desplace a su Cuartel correspondiente
-        {
-            if (this.Localizacion.CompareTo(this.Cuartel) != 0)
-            {
-                if (this.Cuartel != null)
-                    moverse(this.Cuartel);
-                else Console.WriteLine("No es posible. No tiene un Cuartel asignado.");
-            }
-            else Console.WriteLine("Ya se encuentra en el cuartel.");
-
-        }
-
-
-
-
-
-        //ver esta funcion
-        public void ReemplazarBateria(TamañoBateria capacidadBateria)
-        {
-            if(Bateria.estado != EstadoBateria.BuenEstado)
-            {
-                Bateria = new Bateria(capacidadBateria);
-            }
-            else
-            {
-                Console.WriteLine("La bateria se encuentra en buen estado!");
-            }
-        }
+        //----------------------------
+        // fin carga fisica del operador
+        //----------------------------
 
 
 
@@ -169,51 +222,24 @@ namespace TP_Integrador
 
 
 
+
+
+
+        
         /*
-         * 
-         * Hacia abajo se encuentran algunos getters y setters necesarios
-         * 
+         * -------------------------------
+         *  funcion que produce de daño
+         *  ------------------------------
          */
-
-
-        public EstadoOperador getEstado()                      
-        {
-            return this.Estado;
-        }
-
-        public void setEstado(EstadoOperador estado)
-        {
-            this.Estado = estado;
-        }
-
-
-
-        /* public void setBateria(int bateria)
-         {
-             int bat = this.BateriaActual + bateria;
-
-             if(bat > this.BateriaMax)
-             {
-                 this.BateriaActual = this.BateriaMax;
-             }
-             else
-             {
-                 this.BateriaActual = bat;
-             }
-         }
-
-         */
-
-
 
 
 
         public void ProbabilidadesDeDanio(int porcentajeExito)
         {
             Random random = new Random();
-            int aleatorio = random.Next(0,100);
+            int aleatorio = random.Next(0, 100);
 
-            if(aleatorio<porcentajeExito)
+            if (aleatorio < porcentajeExito)
             {
                 IDanioOperador danio = DanioOperador.DanioAleatorio();
                 danio.ProducirDanio(this);
@@ -230,14 +256,37 @@ namespace TP_Integrador
 
 
 
-        public void CambiarEstadoBateria(EstadoBateria nuevoEstado)
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
+         * 
+         * getters y setters
+         * 
+         */
+
+
+        public EstadoOperador getEstado()                      
         {
-            if (Bateria != null)
-            {
-                Bateria.SetEstadoBateria(nuevoEstado);
-            }
+            return this.Estado;
         }
 
+        public void setEstado(EstadoOperador estado)
+        {
+            this.Estado = estado;
+        }
 
 
 
