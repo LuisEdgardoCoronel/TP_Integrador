@@ -64,7 +64,7 @@ namespace TP_Integrador
         }
 
 
-        public void volverAlCuartel()      //Indica al Operador que se desplace a su Cuartel correspondiente
+        public void VolverAlCuartel()      //Indica al Operador que se desplace a su Cuartel correspondiente
         {
             if (this.Localizacion.CompareTo(this.Cuartel) != 0)
             {
@@ -118,7 +118,7 @@ namespace TP_Integrador
         {
             if (this.Bateria.GetEstadoBateria() != EstadoBateria.PuertoDesconectado)//coontrolar si tiene el daño "puerto desconectado"
             {
-                volverAlCuartel();
+                VolverAlCuartel();
                 this.Bateria.RecargarBateriaCompleta();
             }
             else
@@ -167,21 +167,26 @@ namespace TP_Integrador
 
         public void RecargaCargaMax()
         {
-            this.CargaActual = this.CargaMax;
+            if (Estado != EstadoOperador.ServoAtascado)
+            {
+                this.CargaActual = this.CargaMax;
+            }
         }
 
 
         public void RecargarCargaFisica(int carga)
         {
-            if (this.CargaActual<this.CargaMax && (this.CargaActual+carga) <= this.CargaMax)
+            if (Estado != EstadoOperador.ServoAtascado)
             {
-                this.CargaActual += carga;
+                if (this.CargaActual<this.CargaMax && (this.CargaActual+carga) <= this.CargaMax)
+                {
+                    this.CargaActual += carga;
+                }
             }
         }
 
 
-
-        
+        //agregar la condicion de servo atascado a esta funcion
         public void TransferirCargar(Operador op2, int carga)  //Transfiere en kg la carga actual de nuestro Operador a otro Operador op2
         {
             if (this.Localizacion.CompareTo(op2.getLocalizacion) == 0)
@@ -201,12 +206,13 @@ namespace TP_Integrador
 
 
 
-
-
-        public void descargarEnCuartel()    //Descarga la carga actual en el cuartel
+        public void DescargarEnCuartel()    //Descarga la carga actual en el cuartel
         {
-            volverAlCuartel();
-            this.CargaActual = 0;
+            if (Estado != EstadoOperador.ServoAtascado)
+            {
+                VolverAlCuartel();
+                this.CargaActual = 0;
+            }
         }
 
         //----------------------------
@@ -226,9 +232,9 @@ namespace TP_Integrador
 
         
         /*
-         * -------------------------------
-         *  funcion que produce de daño
-         *  ------------------------------
+         * --------------------------------------------------
+         *  funcion que produce de daño y que repara daños
+         *  -------------------------------------------------
          */
 
 
@@ -247,7 +253,12 @@ namespace TP_Integrador
 
 
 
+        public void RepararOperador()
+        {
+            Estado = EstadoOperador.BuenEstado;
 
+            //Bateria.RecargarBateriaCompleta();
+        }
 
 
 

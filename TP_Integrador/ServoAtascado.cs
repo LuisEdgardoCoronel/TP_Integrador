@@ -10,7 +10,7 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
-            //no puede realizar carga y descarga fisica
+            operador.setEstado(EstadoOperador.ServoAtascado);
         }
     }
 }
