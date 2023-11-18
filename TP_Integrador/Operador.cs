@@ -24,14 +24,12 @@ namespace TP_Integrador
 
 
 
-        public Operador(String Localizacion, TamañoBateria capacidadBateria, CargaOperador CapacidadCarga) {
+        public Operador(String Localizacion) {
             this.Id = IdStatic;                    //Cada vez que se cree un objeto Operador, se le asigana el Id automaticamente
             IdStatic++;                           //La variable estatica incrementa automaticamente para asignarle otro Id diferente
             this.Localizacion = Localizacion;     //al siguiente Operador que se cree
             this.Estado = EstadoOperador.BuenEstado;
             this.CargaActual = 0;
-            this.Bateria = new Bateria(capacidadBateria);
-            this.CargaMax = (int)CapacidadCarga;
         }
 
    
@@ -128,10 +126,11 @@ namespace TP_Integrador
         }
 
         //ver esta funcion
-        public void ReemplazarBateria(TamañoBateria capacidadBateria)
+        public void ReemplazarBateria()
         {
             if (Bateria.estado != EstadoBateria.BuenEstado)
             {
+                TamañoBateria capacidadBateria = Bateria.GetTamañoBateria();
                 Bateria = new Bateria(capacidadBateria);
             }
             else
