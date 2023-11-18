@@ -16,6 +16,7 @@ namespace TP_Integrador
         protected Bateria Bateria;//poner en private
 
         protected CargaOperador CapacidadCarga;
+
         protected EstadoOperador Estado;
 
         protected double velocidad;
@@ -33,12 +34,27 @@ namespace TP_Integrador
             this.CargaMax = (int)CapacidadCarga;
         }
 
-
+   
 
 
         public void moverse(String Localizacion)
         {
             //falta implementacion por falta de info sobre las distancia ente localizaciones
+
+            Bateria.DescargaPorMovimiento(this.velocidad);//descarga cada vez que se mueve
+
+            if ()//vertedero
+            {
+
+                ProbabilidadesDeDanio(5);
+                
+            }
+
+            if ()//si es vertedero electronico
+            {
+                Bateria.SetEstadoBateria(EstadoBateria.CargaReducida);
+                Bateria.ReducirCarga();
+            }
         }
 
 
@@ -78,7 +94,7 @@ namespace TP_Integrador
 
 
 
-
+        //carga fisica del operador
 
 
 
@@ -187,6 +203,33 @@ namespace TP_Integrador
          }
 
          */
+
+
+
+
+
+        public void ProbabilidadesDeDanio(int porcentajeExito)
+        {
+            Random random = new Random();
+            int aleatorio = random.Next(0,100);
+
+            if(aleatorio<porcentajeExito)
+            {
+                IDanioOperador danio = DanioOperador.DanioAleatorio();
+                danio.ProducirDanio(this);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
         public void CambiarEstadoBateria(EstadoBateria nuevoEstado)
         {
             if (Bateria != null)
