@@ -10,7 +10,6 @@ namespace TP_Integrador
     {
         BuenEstado,
         StandBy,
-        MotorComprometido,
         ServoAtascado
     }
 }

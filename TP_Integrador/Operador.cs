@@ -45,12 +45,9 @@ namespace TP_Integrador
 
         public void moverse(String Localizacion)
         {
-            double vel;
-            //falta implementacion por falta de info sobre las distancia ente localizaciones
-            if (Estado == EstadoOperador.MotorComprometido) vel = this.velocidad / 2;
-            else vel = this.velocidad;
+            
 
-            Bateria.DescargaPorMovimiento(vel);//descarga cada vez que se mueve
+            Bateria.DescargaPorMovimiento(this.velocidad);//descarga cada vez que se mueve
 
             if ()//vertedero
             {
@@ -101,7 +98,7 @@ namespace TP_Integrador
 
 
 
-        public void transferirBateria(Operador op2, int bateria)  //Transfiere una cantidad en Amh desde nuestro Operador a otro Operador op2
+        public void TransferirBateria(Operador op2, int bateria)  //Transfiere una cantidad en Amh desde nuestro Operador a otro Operador op2
         {
             if (this.Bateria.ObtenerCargaActual() > 0 && 
                 (this.Localizacion.CompareTo(op2.getLocalizacion) == 0)&&//misma localizacion?
@@ -117,7 +114,7 @@ namespace TP_Integrador
 
 
 
-        public void cargarBateriaEnCuartel()           //Indica al operador que se desplace hacia su cuartel y carga su bateria al maximo
+        public void CargarBateriaEnCuartel()           //Indica al operador que se desplace hacia su cuartel y carga su bateria al maximo
         {
             if (this.Bateria.GetEstadoBateria() != EstadoBateria.PuertoDesconectado)//coontrolar si tiene el daño "puerto desconectado"
             {
@@ -277,6 +274,7 @@ namespace TP_Integrador
          * 
          * getters y setters
          * 
+         * 
          */
 
 
@@ -290,7 +288,16 @@ namespace TP_Integrador
             this.Estado = estado;
         }
 
+        public void SetVelocidad(double velocidad)
+        {
+            this.velocidad= velocidad;
+        }
 
+
+        public double GetVelocidad()
+        {
+            return this.velocidad;
+        }
 
         public void setCarga(int carga) { 
             

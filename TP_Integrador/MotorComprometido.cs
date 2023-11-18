@@ -10,7 +10,8 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
-            operador.setEstado(EstadoOperador.MotorComprometido);
+            double vel = operador.GetVelocidad();
+            operador.SetVelocidad(vel/2);
         }
     }
 }
