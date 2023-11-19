@@ -9,6 +9,8 @@ namespace TP_Integrador
     public enum EstadoBateria
     {
         BuenEstado,
-        Dañada
+        Perforada,
+        PuertoDesconectado,
+        CargaReducida
     }
 }
