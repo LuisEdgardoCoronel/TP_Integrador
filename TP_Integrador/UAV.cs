@@ -10,8 +10,8 @@ namespace TP_Integrador
     {
        public UAV (Localizacion localizacion) : base(localizacion)
         {
-            this.BateriaMax = 4000;
-            this.CargaMax = 5;
+            this.Bateria = new Bateria(TamañoBateria.pequeña);
+            this.CargaMax = (int)CargaOperador.Baja;
             this.velocidad = 80;
             
         }
@@ -19,4 +19,3 @@ namespace TP_Integrador
        
     }
     }
-
