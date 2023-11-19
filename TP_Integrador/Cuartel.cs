@@ -12,11 +12,14 @@ namespace TP_Integrador
     {
        private List<Operador> Operadores;
        private Localizacion localizacion;
-
+        private MapaAereo mapaAereo;
+        private MapaTerrestre mapaTerrestre;
    
-      public Cuartel(int fila,int columna) {       // Constructor
+      public Cuartel(int fila,int columna,Mundi mundo) {       // Constructor
           this.localizacion = new Localizacion(fila,columna);
           this.Operadores = new List<Operador>();
+            this.mapaTerrestre = new MapaTerrestre(mundo);   ///Le damos al cuartel un mapa terrestre y aerea del mundo donde esta
+            this.mapaAereo = new MapaAereo(mundo);           ///para que a partir de ellos, indicarle las rutas a sus operadores
         }
       
 
@@ -64,14 +67,36 @@ namespace TP_Integrador
             else Console.WriteLine("No se encontro Operador con Id ["+Id+"]");
         }
 
-        public void enviarOperador(int Id, Localizacion localizacion)   //Envia a un operador especifico a una det. localizacion
-        {
+        public void enviarOperador(int Id, Localizacion localizacion,Mundi mundo)   //Envia a un operador especifico a una det. localizacion
+        {                                                                         ///Recibe  el Id del operador, la ubiacion a mandaro y el mundo donde esta
             int posicion = estaEnLista(Id);
 
             if (posicion >= 0)
             {
-                this.Operadores[posicion].moverse(localizacion); ///Modificacion, cambiamos el string por la clase localizacion
-            }
+                if (this.Operadores[posicion] is K9 || this.Operadores[posicion] is M8)
+                {
+                    Localizacion ubiOp = this.Operadores[posicion].getLocalizacion(); ///obtenemos localizacion del operador
+                    Console.WriteLine("Desea Camino directo o optimo?:"+                   ///se debe modificar ESTO!
+                                      "\n1-Directo." +
+                                      "\n2-Optimo.");
+                    short opcion = short.Parse(Console.ReadLine());
+                    if(opcion == 1)
+                    {
+                        Stack<Nodo> camino = this.mapaTerrestre.devolverCaminoDirecto(ubiOp,localizacion);
+         
+                        this.Operadores[posicion].moverse(camino); ///Modificacion, cambiamos el string por la clase localizacion
+                    }
+                    else
+                    {
+
+                    }
+                    
+                    
+                    
+
+                }
+
+            }                                                        
             else
             {
                 Console.WriteLine("No se encontro Operador con Id [" + Id + "]");
@@ -85,7 +110,7 @@ namespace TP_Integrador
 
             if (posicion >= 0)
             {
-                this.Operadores[posicion].setEstado("StandBy");
+                this.Operadores[posicion].setEstado(EstadoOperador.StandBy);
             }
             else
             {
@@ -175,7 +200,6 @@ namespace TP_Integrador
         {                                      ///No se agregar a la clase terreno pq no nos interesa guardar la localizacion
             return this.localizacion;         ///De los demas terrenos
         }
-
 
     }
 }
