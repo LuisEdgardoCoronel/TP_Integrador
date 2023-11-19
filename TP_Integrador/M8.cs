@@ -10,8 +10,8 @@ namespace TP_Integrador
     {
         public M8(Localizacion localizacion) : base(localizacion)
         {
-            this.BateriaMax = 12250;
-            this.CargaMax = 250;
+            this.Bateria = new Bateria(TamañoBateria.grande);
+            this.CargaMax = (int)CargaOperador.Alta;
             this.velocidad = 110;
 
         }
