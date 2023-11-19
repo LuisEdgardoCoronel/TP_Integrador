@@ -10,8 +10,8 @@ namespace TP_Integrador
     {
         public K9(Localizacion localizacion) : base(localizacion)
         {
-            this.BateriaMax = 6500;
-            this.CargaMax = 40;
+            this.Bateria = new Bateria(TamañoBateria.mediana);
+            this.CargaMax = (int)CargaOperador.Media;
             this.velocidad = 100;
 
         }
