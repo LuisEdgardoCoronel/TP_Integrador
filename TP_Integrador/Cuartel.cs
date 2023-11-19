@@ -12,14 +12,20 @@ namespace TP_Integrador
     {
        private List<Operador> Operadores;
        private Localizacion localizacion;
-        private MapaAereo mapaAereo;
         private MapaTerrestre mapaTerrestre;
+        private MapaAereo mapaAereo;
    
-      public Cuartel(int fila,int columna,Mundi mundo) {       // Constructor
+      public Cuartel(int fila,int columna) {       // Constructor
           this.localizacion = new Localizacion(fila,columna);
           this.Operadores = new List<Operador>();
-            this.mapaTerrestre = new MapaTerrestre(mundo);   ///Le damos al cuartel un mapa terrestre y aerea del mundo donde esta
-            this.mapaAereo = new MapaAereo(mundo);           ///para que a partir de ellos, indicarle las rutas a sus operadores
+          
+
+        }
+
+     public void asignarMapas(MapaTerrestre mT, MapaAereo mA)   //Le damos un mapa del mundo a nuestro cuartel, al momento de crear el mundo, se le asigna 
+        {                                                      //a cada cuartel un mapa
+            this.mapaTerrestre = mT;
+            this.mapaAereo = mA;
         }
       
 
@@ -67,34 +73,15 @@ namespace TP_Integrador
             else Console.WriteLine("No se encontro Operador con Id ["+Id+"]");
         }
 
-        public void enviarOperador(int Id, Localizacion localizacion,Mundi mundo)   //Envia a un operador especifico a una det. localizacion
+        public void enviarOperador(int Id, Localizacion localizacion)   //Envia a un operador especifico a una det. localizacion
         {                                                                         ///Recibe  el Id del operador, la ubiacion a mandaro y el mundo donde esta
             int posicion = estaEnLista(Id);
 
             if (posicion >= 0)
             {
-                if (this.Operadores[posicion] is K9 || this.Operadores[posicion] is M8)
-                {
-                    Localizacion ubiOp = this.Operadores[posicion].getLocalizacion(); ///obtenemos localizacion del operador
-                    Console.WriteLine("Desea Camino directo o optimo?:"+                   ///se debe modificar ESTO!
-                                      "\n1-Directo." +
-                                      "\n2-Optimo.");
-                    short opcion = short.Parse(Console.ReadLine());
-                    if(opcion == 1)
-                    {
-                        Stack<Nodo> camino = this.mapaTerrestre.devolverCaminoDirecto(ubiOp,localizacion);
-         
-                        this.Operadores[posicion].moverse(camino); ///Modificacion, cambiamos el string por la clase localizacion
-                    }
-                    else
-                    {
 
-                    }
-                    
-                    
-                    
+                this.Operadores[posicion].moverse(localizacion);  ///Indicamos al operador que se mueva, el sera el encargado de trazar en us mapa la ruta
 
-                }
 
             }                                                        
             else
@@ -132,22 +119,21 @@ namespace TP_Integrador
             else Console.WriteLine("No se pudo crear el operador.");
         }
 
-        ///Se elimino el segundo metodo, ya que no era necesario. Por que todos los operadores se crean en un Cuartel especifico
-
+        
         private Operador cargarOperador()                //Metodo privado encargado de crear un nuevo Operador
         {
-            Operador op = null;
-            
+            Operador op = null;                                   
+                                                                 
             short tipo = tipoOperador();
            
 
             switch (tipo)
             {
-                case 1: op = new UAV(this.localizacion);  ///Recibe la localizacion del cuartel. Idem para los demas
+                case 1: op = new UAV(this.localizacion,mapaAereo,"Aereo");  ///Recibe la localizacion del cuartel. Idem para los demas
+                    break;                                      
+                case 2: op = new M8(this.localizacion,mapaTerrestre,"Terrestre");  ///Indicamos ademas el tipo de operador
                     break;
-                case 2: op = new M8(this.localizacion);
-                    break;
-                case 3: op = new K9(this.localizacion);
+                case 3: op = new K9(this.localizacion, mapaTerrestre,"Terrestre");
                     break;
                 default: Console.WriteLine("Error. No se eligio tipo de Operador.");
                     break;
@@ -200,6 +186,12 @@ namespace TP_Integrador
         {                                      ///No se agregar a la clase terreno pq no nos interesa guardar la localizacion
             return this.localizacion;         ///De los demas terrenos
         }
+
+
+
+
+
+
 
     }
 }
