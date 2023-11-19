@@ -1,4 +1,4 @@
-    using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -16,6 +16,8 @@ namespace TP_Integrador
         protected Localizacion localizacion;
         protected Localizacion localizacionCuartel;
         protected double velocidad;
+        protected Mapa mapa;
+        protected string tipo;
 
         public Operador(Localizacion localizacion) {    //Se crea Operador, recibiendo la localizacion del Cuartel donde se crea
 
@@ -35,39 +37,71 @@ namespace TP_Integrador
       * ------------------------------------------
       */
 
-        public abstract void moverse(Stack<Nodo> camino);
+        public void moverse(Localizacion localizacion)
+        {
 
-        /// VER!
+            Stack<Nodo> camino = determinaCamino(localizacion); /// Aqui ya tendriamos la pila de los nodos Camino
+            if (camino.Count() != 0)
+            {
+                if (this.Bateria.getBateriaActual() > 1000 / velocidad)
+                {
 
-        /*    public void moverse(String Localizacion)
-          {
+                    Bateria.DescargaPorMovimiento(this.velocidad);//descarga cada vez que se mueve
 
-              // pila = [[n1,m1],[n2,m2].....]; PILA
+                    // if ()//vertedero
+                    {
 
-              if (this.Bateria.getBateriaActual() > 1000 / velocidad)
-              {
+                        ProbabilidadesDeDanio(5);
 
-                  Bateria.DescargaPorMovimiento(this.velocidad);//descarga cada vez que se mueve
+                    }
 
-                  if ()//vertedero
-                  {
+                    // if ()//si es vertedero electronico
+                    {
+                        Bateria.SetEstadoBateria(EstadoBateria.CargaReducida);
+                        Bateria.ReducirCarga();
+                    }
+                }
+                else Console.WriteLine("No se puede realizar movimiento. Bateria insuficiente.");
+            }
 
-                      ProbabilidadesDeDanio(5);
-
-                  }
-
-                  if ()//si es vertedero electronico
-                  {
-                      Bateria.SetEstadoBateria(EstadoBateria.CargaReducida);
-                      Bateria.ReducirCarga();
-                  }
-              }
-              else Console.WriteLine("No se puede realizar movimiento. Bateria insuficiente.");
+            else Console.WriteLine("No es posible encontrar un camino.");
+        }
 
 
+        private Stack<Nodo> determinaCamino(Localizacion destino)
+        {
+            Stack<Nodo> camino;
+            short tipoRuta = tipoDeRuta();
+            if (tipoRuta == 1)
+            {
+                if(this.tipo == "Terrestre")
+                camino =((MapaTerrestre)mapa).devolverCaminoDirecto(this.localizacion, destino);
+                else camino = ((MapaAereo)mapa).devolverCaminoDirecto(this.localizacion, destino);
+            }
+            else
+            {
+                if(this.tipo == "Terrestre")
+                camino = ((MapaTerrestre)mapa).devolverCaminoOptimo(this.localizacion, destino);
+                else camino = ((MapaAereo)mapa).devolverCaminoOptimo(this.localizacion, destino); ;
+            }
+            return camino;
 
-          }
-           */
+        }
+
+        private short tipoDeRuta()
+        {
+            short opcion;
+            do
+            {
+                Console.WriteLine("Que tipo de ruta desea seguir?" +
+                                   "\n1) Directa" +
+                                    "\n2) Optima");
+                opcion = short.Parse(Console.ReadLine());
+
+            } while (opcion < 1 && opcion > 2);
+            return opcion;
+        }
+
 
 
         /*
