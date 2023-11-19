@@ -10,19 +10,18 @@ namespace TP_Integrador
     {
         protected Nodo[,] matriz;
         protected int[,] distancia;
+        /// cola donde se atenderá a cada uno de los nodos del mundo
         protected Queue<Nodo> cola;
-
         protected List<Cuartel> cuarteles;
         protected List<SitioReciclaje> sitiosReciclaje;
 
-        public Mapa(Mundi mundo)
+        public Mapa(Nodo[,] matriz, int n , List<Cuartel> cuarteles, List<SitioReciclaje> sReciclaje)
         {
-            this.matriz = mundo.getMatrizNodos();
-            distancia = new int[mundo.getTamanioMundo() + 2, mundo.getTamanioMundo() + 2];
+            this.matriz = matriz;
+            distancia = new int[n + 2, n+ 2];
             cola = new Queue<Nodo>();
-            cuarteles = mundo.getCuarteles();
-            sitiosReciclaje = mundo.GetSitioReciclajes();
+            this.cuarteles = cuarteles;
+            this.sitiosReciclaje = sReciclaje;
         }
 
     }
-}
