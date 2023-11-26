@@ -24,7 +24,7 @@ namespace TP_Integrador
             for(int i = 0; i < this.Operadores.Count; i++)
             {
                 Operador op = this.Operadores[i];
-                Console.WriteLine($"Operador con Id: [{op.getId}]. Estado = {op.getEstado}");
+                Console.WriteLine($"Operador con Id: [{op.GetId}]. Estado = {op.GetEstadoLogico}");
             }
         }
 
@@ -33,9 +33,13 @@ namespace TP_Integrador
               for (int i = 0;i < this.Operadores.Count;i++)
             {
                 Operador op = this.Operadores[i];
+<<<<<<< Updated upstream
                 if (op.getLocalizacion().CompareTo(Localizacion) ==0)
+=======
+                if (op.GetLocalizacion().equals(localizacion)) ///Modificado comparacion de localizaciones
+>>>>>>> Stashed changes
                 {
-                    Console.WriteLine($"Operador con Id: [{op.getId}]. Estado = {op.getEstado}");
+                    Console.WriteLine($"Operador con Id: [{op.GetId}]. Estado = {op.GetEstadoLogico}");
                 }
             }
         }
@@ -45,7 +49,7 @@ namespace TP_Integrador
             for (int i = 0; i < this.Operadores.Count; i++)
             {
                 Operador op = this.Operadores[i];
-                op.volverAlCuartel(); 
+                op.VolverAlCuartel(); 
             }
         }
 
@@ -56,7 +60,7 @@ namespace TP_Integrador
 
             if (posicion >= 0)
             {
-                this.Operadores[posicion].volverAlCuartel();
+                this.Operadores[posicion].VolverAlCuartel();
             }
             else Console.WriteLine("No se encontro Operador con Id ["+Id+"]");
         }
@@ -82,7 +86,7 @@ namespace TP_Integrador
 
             if (posicion >= 0)
             {
-                this.Operadores[posicion].setEstado(EstadoOperador.StandBy);
+                this.Operadores[posicion].SetEstadoLogico(EstadoLogicoOp.StandBy);
             }
             else
             {
@@ -153,7 +157,7 @@ namespace TP_Integrador
 
             for(int i = 0; i<this.Operadores.Count(); i++)
             {
-                if (this.Operadores[i].getId() == Id) posicion = i; 
+                if (this.Operadores[i].GetId() == Id) posicion = i; 
             }
             return posicion;
         }
