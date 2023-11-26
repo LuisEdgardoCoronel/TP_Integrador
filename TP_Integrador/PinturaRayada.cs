@@ -10,6 +10,7 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
+            operador.SetEstadoFisico(EstadoFisicoOp.PinturaDañada);
             Console.WriteLine($"El operador {operador} sufrió rayaduras en su pintura");
         }
     }

@@ -10,7 +10,12 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
+<<<<<<< Updated upstream
             operador.CambiarEstadoBateria(EstadoBateria.PuertoDesconectado);
+=======
+           
+            operador.GetBateria().SetEstadoBateria(EstadoBateria.PuertoDesconectado);
+>>>>>>> Stashed changes
 
         }
     }

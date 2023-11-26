@@ -10,7 +10,7 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
-            operador.setEstado(EstadoOperador.ServoAtascado);
+            operador.SetEstadoFisico(EstadoFisicoOp.ServoAtascado);
         }
     }
 }
