@@ -8,18 +8,23 @@ namespace TP_Integrador
 {
     internal class MapaTerrestre : Mapa
     {
-        /// se asume que los nodos adyacentes a un vertice son 4, y estan dados por el que esta arriba(Norte), abajo(Sur), este(Derecha), oeste(izquieda)
+        /// se asume que los nodos adyacentes a un vertice son 4, y estan dados por el que estza arriba(Norte), abajo(Sur), este(Derecha), oeste(izquieda)
         /// <b>dx</b> es la variacion en la columna
-        private int[] dx = { -1, 0, 1, 0 };
+        public int[] dx { get; private set; } = { -1, 0, 1, 0 }; 
 
         /// dy es la variacion en la fila para los vertices adyacentes, recuerde que ambos, tanto dy y dx combinados en la misma posicion forman el vertice adyacente aumentandole el valor
         /// almacenado en el vector
-        private int[] dy = { 0, -1, 0, 1 };
+        public int[] dy { get; private set; } = { 0, -1, 0, 1 };
 
         /// inicio es el vertice de partida
         /// fin es el vertice objetivo o salida
-        private Nodo inicio, fin;
-        public MapaTerrestre(Nodo[,] matriz, int n, List<Cuartel> cuarteles, List<SitioReciclaje> sReciclaje) :base(matriz,n,cuarteles,sReciclaje){
+        public Nodo inicio { get; private set; }
+        public Nodo fin { get; private set; }
+
+       
+
+        public MapaTerrestre(Nodo[,] matriz, int n, List<Cuartel> cuarteles, List<SitioReciclaje> sReciclaje, List<Localizacion> vertederos) :base(matriz,n,cuarteles,sReciclaje, vertederos)
+        {
             
         }
 
