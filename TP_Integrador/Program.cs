@@ -8,3 +8,12 @@
  
  
  */
+
+// See https://aka.ms/new-console-template for more information
+using TP_Integrador;
+
+
+Prueba prueba = new Prueba();
+prueba.mostrarInfoCuarteles();
+prueba.guardarInfo();
+prueba.leerInfo();
