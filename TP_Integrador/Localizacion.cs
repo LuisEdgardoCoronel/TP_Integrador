@@ -10,9 +10,26 @@ namespace TP_Integrador
     {
         private int fila,columna;
 
+        public int filaProperty { get; private set; }
+        public int columnaProperty { get; private set; }
+        // probar
+        public string nombreProperty { get; private set; }
+
+
+        public Localizacion(int filaProperty, int columnaProperty, string nombreProperty)
+        {
+            this.columnaProperty = columnaProperty;
+            this.filaProperty = filaProperty;
+            this.nombreProperty = nombreProperty;
+        }
+
+
         public Localizacion(int f, int c) {
-            this.fila = f;
-            this.columna = c;
+        //    this.fila = f;
+        //    this.columna = c;
+            this.columnaProperty = c;
+            this.filaProperty = f;
+            this.nombreProperty = "ubicacion [" + f + "][" + c +"]";
         }
 
          public int getFila() { return fila; }
@@ -32,7 +49,7 @@ namespace TP_Integrador
         {
             return (this.fila == local2.getFila() && this.columna == local2.getColumna());
         }
-
+        
 
 
     }
