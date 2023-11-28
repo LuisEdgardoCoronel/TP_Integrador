@@ -20,7 +20,7 @@ namespace TP_Integrador
         /// fin es el vertice objetivo o salida
         private Nodo inicio, fin;
 
-        public MapaAereo(Nodo[,] matriz, int n, List<Cuartel> cuarteles, List<SitioReciclaje> sReciclaje) : base(matriz, n, cuarteles, sReciclaje)
+        public MapaAereo(Nodo[,] matriz, int n, List<Cuartel> cuarteles, List<SitioReciclaje> sReciclaje, List<Localizacion> vertederos) : base(matriz, n, cuarteles, sReciclaje, vertederos)
         {
 
         }
