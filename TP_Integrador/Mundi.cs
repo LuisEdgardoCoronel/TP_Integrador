@@ -18,10 +18,12 @@ namespace TP_Integrador
 
         private int n;
 
-        private List<Cuartel> cuarteles;
+        private List<Cuartel> cuarteles { get; set; }
 
 
         private List<SitioReciclaje> sitiosReciclaje;
+
+        private List<Localizacion> vertederos; 
         /// Constructor 
 
         public Mundi()
@@ -31,7 +33,8 @@ namespace TP_Integrador
             matriz = new Nodo[n+2, n+2]; //se suma +2,para permitir realiazr consultas adyacentes y no desborde la matriz     
             cuarteles = new List<Cuartel>();
             sitiosReciclaje = new List<SitioReciclaje> ();
-
+            vertederos = new List<Localizacion>();
+            cargarMundi();
         }
 
        
@@ -62,8 +65,8 @@ namespace TP_Integrador
                 }
             }
 
-            MapaTerrestre mapaT = new MapaTerrestre(this.matriz, this.n, this.cuarteles, this.sitiosReciclaje); /// Creamos un mapa a partir de nuestro mundo terrestre y otro aereo
-            MapaAereo mapaA = new MapaAereo(this.matriz, this.n, this.cuarteles, this.sitiosReciclaje);
+            MapaTerrestre mapaT = new MapaTerrestre(this.matriz, this.n, this.cuarteles, this.sitiosReciclaje,this.vertederos); /// Creamos un mapa a partir de nuestro mundo terrestre y otro aereo
+            MapaAereo mapaA = new MapaAereo(this.matriz, this.n, this.cuarteles, this.sitiosReciclaje,this.vertederos);
             foreach (Cuartel c in this.cuarteles)
             {
                 c.asignarMapas(mapaT,mapaA); //a cada cuartel le damos un mapa del mundo
@@ -80,11 +83,13 @@ namespace TP_Integrador
             {
                 int tipo = rnd.Next(0, 9);
                 terreno = creaTerreno(tipo,i,j);
-
+              
             } while ((terreno is Cuartel && this.cuarteles.Count()>=3)||(terreno is SitioReciclaje && this.sitiosReciclaje.Count()>=5));
 
             if (terreno is Cuartel) this.cuarteles.Add((Cuartel)terreno);
             if (terreno is SitioReciclaje) this.sitiosReciclaje.Add((SitioReciclaje)terreno);
+            Localizacion local = new Localizacion(i, j);
+            if (terreno is Vertedero) this.vertederos.Add(local);
             return terreno;
         }
 
