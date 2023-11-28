@@ -4,21 +4,35 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TP_Integrador
 {
     internal class Cuartel : Terreno
     {
-       private List<Operador> Operadores;
-       private Localizacion localizacion;
-        private MapaTerrestre mapaTerrestre;
-        private MapaAereo mapaAereo;
-   
-      public Cuartel(int fila,int columna) {       // Constructor
+       public List<Operador> Operadores { get; private set; }
+        public Localizacion localizacion { get; private set; }
+        public MapaTerrestre mapaTerrestre { get; private set; }
+        public MapaAereo mapaAereo { get; private set; }
+
+
+      
+
+        public Cuartel (Localizacion localizacion, List<Operador> Operadores, MapaTerrestre mapaTerrestre, MapaAereo mapaAereo)
+        {
+            this.localizacion = localizacion;
+            this.Operadores = Operadores;
+            this.mapaAereo = mapaAereo;
+            this.mapaTerrestre = mapaTerrestre;
+        }
+
+
+
+        public Cuartel(int fila,int columna) {       // Constructor
           this.localizacion = new Localizacion(fila,columna);
           this.Operadores = new List<Operador>();
-          
+           
 
         }
 
@@ -31,23 +45,23 @@ namespace TP_Integrador
 
        
 
-      public void estado()                      //Muestra el estado actual de todos los operadores del cuartel
+      public void estadoLogico()                      //Muestra el estado actual de todos los operadores del cuartel
         {
             for(int i = 0; i < this.Operadores.Count; i++)
             {
                 Operador op = this.Operadores[i];
-                Console.WriteLine($"Operador con Id: [{op.getId}]. Estado = {op.getEstado}");
+                Console.WriteLine($"Operador con Id: [{op.getId}]. Estado = {op.getEstadoLogico()}");
             }
         }
 
-      public void estado (Localizacion localizacion)  //Muestra el estado actual de los operadores que se encuentran en una det. localizacion
+      public void estadoLogico(Localizacion localizacion)  //Muestra el estado actual de los operadores que se encuentran en una det. localizacion
         {
               for (int i = 0;i < this.Operadores.Count;i++)
             {
                 Operador op = this.Operadores[i];
                 if (op.getLocalizacion().equals(localizacion)) ///Modificado comparacion de localizaciones
                 {
-                    Console.WriteLine($"Operador con Id: [{op.getId}]. Estado = {op.getEstado}");
+                    Console.WriteLine($"Operador con Id: [{op.getId}]. Estado = {op.getEstadoLogico()}");
                 }
             }
         }
@@ -97,7 +111,7 @@ namespace TP_Integrador
 
             if (posicion >= 0)
             {
-                this.Operadores[posicion].setEstado(EstadoOperador.StandBy);
+                this.Operadores[posicion].setEstadoLogico(EstadoLogicoOp.StandBy);
             }
             else
             {
@@ -187,10 +201,57 @@ namespace TP_Integrador
             return this.localizacion;         ///De los demas terrenos
         }
 
+        public void mostraroOperadores()
+        {
+            foreach(Operador op in this.Operadores)
+            {
+                Console.WriteLine("Operador " + op.getId());
+            }
+        }
 
 
+        // NUEVAS FUNCIONALIDADES PARTE 2
 
+        /*  Orden general: Todos los operadores que no estén ocupados
+             actualmente deben dirigirse al vertedero más cercano y recoger su
+             cantidad máxima de carga para traer al sitio de reciclaje más cercano.*/
 
+        public void cargayDescargaFisica()
+        {
+            foreach(Operador op in this.Operadores)
+            {
+                if(op.getCargaActual() < op.getCargaMaxima())
+                {
+                    op.moverseVertederoCercano();
+                    op.moverseSitioReciclajeCercano();
+                }
+            }
+        }
+
+        public void repararOperadores()
+        {
+            foreach(Operador op in this.Operadores)
+            {
+                if(op.getEstadoFisico() != EstadoFisicoOp.BuenEstado)
+                {
+                    op.volverAlCuartel();
+                    op.RepararOperador();
+                }
+            }
+
+        }
+
+        public void reemplazarBateria()
+        {
+            foreach (Operador op in this.Operadores)
+            {
+                if (op.getBateria().GetEstadoBateria()!=EstadoBateria.BuenEstado)
+                {
+                    op.volverAlCuartel();
+                    op.ReemplazarBateria();
+                }
+            }
+        }
 
 
     }
