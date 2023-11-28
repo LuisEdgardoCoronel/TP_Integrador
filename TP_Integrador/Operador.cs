@@ -11,13 +11,20 @@ namespace TP_Integrador
     {
         protected static int IdStatic=0;            //Atributo estatico,inicializado en 0
         protected int Id,CargaMax,CargaActual;
-        protected EstadoOperador Estado;
+        protected EstadoLogicoOp EstadoLogico;
+        protected EstadoFisicoOp EstadoFisico;
         protected Bateria Bateria;
         protected Localizacion localizacion;
         protected Localizacion localizacionCuartel;
         protected double velocidad;
         protected Mapa mapa;
         protected string tipo;
+        protected int cantKms;
+        protected int cantEnergiaConsumida;
+        protected int cantCargaTransportada;
+        protected int cantInstrucciones;
+        protected int cantDanios;
+        protected Queue<Localizacion> ultimasUbicVisitadas;
 
         public Operador(Localizacion localizacion) {    //Se crea Operador, recibiendo la localizacion del Cuartel donde se crea
 
@@ -26,8 +33,15 @@ namespace TP_Integrador
                                                   //al siguiente Operador que se cree
             this.localizacion = localizacion;             ///Indicamos la localizacion donde se crea el operador
             this.localizacionCuartel = this.localizacion; /// Asignamos ademas la localzacin de su cuartel correspondiente
-            this.Estado = EstadoOperador.BuenEstado;
+            this.EstadoLogico = EstadoLogicoOp.BuenEstado;
+            this.EstadoFisico = EstadoFisicoOp.BuenEstado;
             this.CargaActual = 0;
+            this.cantKms = 0;
+            this.cantEnergiaConsumida = 0;
+            this.cantCargaTransportada = 0;
+            this.cantInstrucciones = 0;
+            this.cantDanios = 0;
+            this.ultimasUbicVisitadas = new Queue<Localizacion>();
           
         }
 
@@ -39,29 +53,57 @@ namespace TP_Integrador
 
         public void moverse(Localizacion localizacion)
         {
-
+            bool continuarCamino = true;
             Stack<Nodo> camino = determinaCamino(localizacion); /// Aqui ya tendriamos la pila de los nodos Camino
-            if (camino.Count() != 0)
+
+            if (camino.Count() != 0 && localizacion!=null)
             {
-                if (this.Bateria.getBateriaActual() > 1000 / velocidad)
+                //////////////////////////////////////////////////////////////////////////////////////////////
+                ///
+                this.cantInstrucciones++;
+                while (camino.Count() != 0 && continuarCamino)
                 {
 
-                    Bateria.DescargaPorMovimiento(this.velocidad);//descarga cada vez que se mueve
 
-                    // if ()//vertedero
+                    if (this.Bateria.getBateriaActual() > 1000 / velocidad)
                     {
+                        Nodo nodo = camino.Pop();
+                        this.localizacion.setFila(nodo.getFila());
+                        this.localizacion.setColumna(nodo.getColumna());
+                        this.cantKms++;
+                        
+                        Bateria.DescargaPorMovimiento(this.velocidad);//descarga cada vez que se mueve
 
-                        ProbabilidadesDeDanio(5);
+                        cargarUltimaLocalizacion(new Localizacion(nodo.getFila(),nodo.getColumna()));
 
+
+                         if (nodo.getTipo() is Vertedero)//vertedero
+                        {
+
+                            ProbabilidadesDeDanio(5);
+                            this.cantDanios++;
+                        }
+
+                         if (nodo.getTipo() is VertederoElectronico)//si es vertedero electronico
+                        {
+                            Bateria.SetEstadoBateria(EstadoBateria.CargaReducida);
+                            Bateria.ReducirCarga();
+                            this.cantDanios++;
+                        }
                     }
-
-                    // if ()//si es vertedero electronico
+                    else
                     {
-                        Bateria.SetEstadoBateria(EstadoBateria.CargaReducida);
-                        Bateria.ReducirCarga();
+                        Console.WriteLine("No se puede realizar movimiento. Bateria insuficiente.");
+                        continuarCamino = false;
                     }
+                    
                 }
-                else Console.WriteLine("No se puede realizar movimiento. Bateria insuficiente.");
+                
+
+
+
+
+                /////////////////////////////////////////////////////////////////////////////////////////////
             }
 
             else Console.WriteLine("No es posible encontrar un camino.");
@@ -102,6 +144,18 @@ namespace TP_Integrador
             return opcion;
         }
 
+        private void cargarUltimaLocalizacion (Localizacion localizacion)
+        {
+            if (this.ultimasUbicVisitadas.Count() >= 3)
+            {
+                this.ultimasUbicVisitadas.Dequeue();
+                this.ultimasUbicVisitadas.Enqueue(localizacion);
+            }
+            else
+            {
+                this.ultimasUbicVisitadas.Enqueue(localizacion);
+            }
+        }
 
 
         /*
@@ -129,6 +183,7 @@ namespace TP_Integrador
             {
                 this.Bateria.DescargarBateria(bateria);
                 op2.Bateria.CargarBateria(bateria);
+                this.cantInstrucciones++;
             }
             else Console.WriteLine("No es posible realizar la transferencia de bateria porque no estan en la misma localizacion");
         }
@@ -139,6 +194,7 @@ namespace TP_Integrador
             {
                 volverAlCuartel();
                 this.Bateria.RecargarBateriaCompleta();
+                
             }
             else
             {
@@ -153,6 +209,7 @@ namespace TP_Integrador
             {
                 TamañoBateria capacidadBateria = Bateria.GetTamañoBateria();
                 Bateria = new Bateria(capacidadBateria);
+                this.cantInstrucciones++;
             }
             else
             {
@@ -181,29 +238,34 @@ namespace TP_Integrador
 
         public void RecargaCargaMax()
         {
-            if (Estado != EstadoOperador.ServoAtascado)
+            if (this.EstadoFisico != EstadoFisicoOp.ServoAtascado)
             {
                 this.CargaActual = this.CargaMax;
+                this.cantCargaTransportada += this.CargaMax;
+                this.cantInstrucciones++;
             }
         }
 
 
         public void RecargarCargaFisica(int carga)
         {
-            if (Estado != EstadoOperador.ServoAtascado)
+            if (this.EstadoFisico != EstadoFisicoOp.ServoAtascado)
             {
                 if (this.CargaActual < this.CargaMax && (this.CargaActual + carga) <= this.CargaMax)
                 {
                     this.CargaActual += carga;
+                    this.cantCargaTransportada += carga;
+                    this.cantInstrucciones++;
                 }
             }
+            else Console.WriteLine("No es posible realizar la carga fisica. Servo Atascado.");
         }
 
 
 
         public void transferirCargar(Operador op2, int carga)  //Transfiere en kg la carga actual de nuestro Operador a otro Operador op2
         {
-            if(this.Estado != EstadoOperador.ServoAtascado)
+            if(this.EstadoFisico != EstadoFisicoOp.ServoAtascado)
             {
                 if (this.localizacion.Equals(op2.getLocalizacion())) ///se cambio la comparacion
                 {
@@ -212,7 +274,8 @@ namespace TP_Integrador
                     if (carga <= this.CargaActual && (c > op2.getCargaMaxima() || c < 0))
                     {
                         this.CargaActual -= carga;
-                        op2.setCarga(c);
+                        op2.RecargarCargaFisica(carga);
+                        this.cantInstrucciones++;
                     }
                     else Console.WriteLine("No es posible realizar la transferencia de carga");
 
@@ -226,10 +289,11 @@ namespace TP_Integrador
 
         public void DescargarEnCuartel()    //Descarga la carga actual en el cuartel
         {
-            if (Estado != EstadoOperador.ServoAtascado)
+            if (this.EstadoFisico != EstadoFisicoOp.ServoAtascado)
             {
                 volverAlCuartel();
                 this.CargaActual = 0;
+                
             }
         }
 
@@ -259,7 +323,7 @@ namespace TP_Integrador
 
         public void RepararOperador()
         {
-            this.Estado = EstadoOperador.BuenEstado;
+            this.EstadoFisico = EstadoFisicoOp.BuenEstado;
 
             this.Bateria.RecargarBateriaCompleta();
         }
@@ -274,16 +338,25 @@ namespace TP_Integrador
 
         // getters and setters
 
-        public EstadoOperador getEstado()                      //Hacia abajo se encuentran algunos getters y setters necesarios
+        public EstadoFisicoOp getEstadoFisico()                      //Hacia abajo se encuentran algunos getters y setters necesarios
         {
-            return this.Estado;
+            return this.EstadoFisico;
         }
 
-        public void setEstado(EstadoOperador estado)
+        public void setEstadoFisico(EstadoFisicoOp estado)
         {
-            this.Estado = estado;
+            this.EstadoFisico = estado;
         }
 
+        public EstadoLogicoOp getEstadoLogico()                      //Hacia abajo se encuentran algunos getters y setters necesarios
+        {
+            return this.EstadoLogico;
+        }
+
+        public void setEstadoLogico(EstadoLogicoOp estado)
+        {
+            this.EstadoLogico = estado;
+        }
 
 
         public void setCarga(int carga)
@@ -349,6 +422,87 @@ namespace TP_Integrador
 
         }
 
+        // FUNCIONES PARTE 2
+
+        public void moverseVertederoCercano()
+        {
+            int min = 500;
+            int i = 0,actual;
+            bool bandera=true;
+            Localizacion vertederoCercano = null;
+
+            while (i < this.mapa.getVertederos().Count() && bandera)
+            {
+                Localizacion vertedero = this.mapa.getVertederos()[i];
+
+                actual = Math.Abs(this.localizacion.getFila() - vertedero.getFila()) + Math.Abs(this.localizacion.getColumna() - vertedero.getColumna());
+                if(actual < min)
+                {
+                    min = actual;
+                    vertederoCercano = vertedero;
+                }
+                if(min == 1)
+                {
+                    bandera = false;
+                }
+
+                i++;
+            }
+
+            moverse(vertederoCercano);
+            if (this.localizacion.equals(vertederoCercano))
+            {
+                this.CargaActual = this.CargaMax;
+            }
+            else Console.WriteLine("El operador [" + this.Id + "] No logro llegar al vertedero mas cercano");
+        }
+
+
+        public void moverseSitioReciclajeCercano()
+        {
+            Localizacion sitioReciclajeCercano = null;
+            bool bandera = false;                                   //se podria optimizar con Find o Contains (investigar metodo)
+            int i = 0;
+            while(i<this.mapa.getVertederos().Count() && !bandera)
+            {
+                if (this.localizacion.equals(this.mapa.getVertederos()[i]))
+                {
+                    bandera = true;
+                }
+                i++;
+            }
+           
+            if (bandera)
+            {
+                int min = 500, actual;
+                i = 0;
+                while (i < this.mapa.getSitiosReciclaje().Count() && bandera)
+                {
+                    Localizacion sitioReciclaje = this.mapa.getSitiosReciclaje()[i].getLocalizacion();
+
+                    actual = Math.Abs(this.localizacion.getFila() - sitioReciclaje.getFila()) + Math.Abs(this.localizacion.getColumna() - sitioReciclaje.getColumna());
+                    if (actual < min)
+                    {
+                        min = actual;
+                        sitioReciclajeCercano = sitioReciclaje;
+                    }
+                    if (min == 1)
+                    {
+                        bandera = false;
+                    }
+
+                    i++;
+                }
+                moverse(sitioReciclajeCercano);
+                if (this.localizacion.equals(sitioReciclajeCercano))
+                {
+                    this.CargaActual = 0;
+                }
+                else Console.WriteLine("El operador ["+ this.Id +"] No logro llegar al sitio de Reciclaje mas cercano");
+
+            }
+
+        }
 
     }
 
