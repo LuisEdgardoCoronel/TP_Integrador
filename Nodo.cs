@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TP_Integrador
+{
+    internal class Nodo
+    {
+        public int fila { get; set; }
+        public int columna { get; set; }
+
+        /// tipo de Vertic, 'I'->Punto de inicio(partida), 'S'->Punto final(Salida), 'P'->No se puede pasar,  'X'->CAMINO VALIDO
+        public Terreno tipo { get; set; }
+
+        /// Indica si el nodo ya ha sido visitado
+
+        public bool visitado { get; set; }
+
+        /// Nodo anterior por el cual se debe seguir a la siguiente ruta
+
+        public Nodo? anterior { get; set; }
+
+        public Nodo()
+        {
+            
+        }
+       
+
+
+    }
+
+     
+
+}
