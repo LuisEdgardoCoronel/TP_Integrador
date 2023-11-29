@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TP_Integrador
@@ -13,12 +14,19 @@ namespace TP_Integrador
         public double bateriaActual { get; set; }
         public EstadoBateria estado { get; set; }
 
+        public Bateria()
+        {
 
-        public Bateria(TamañoBateria tipoBateria, double bateriaMaxima, double bateriaActual, EstadoBateria estado) { 
-            this.bateriaActual = bateriaActual;
-            this.estado = estado;
+        }
+
+        [JsonConstructor]
+        public Bateria(TamañoBateria tipoBateria, double bateriaMaxima, double bateriaActual, EstadoBateria estado) {
             this.tipoBateria = tipoBateria;
             this.bateriaMaxima = bateriaMaxima;
+            this.bateriaActual = bateriaActual;
+            this.estado = estado;
+           
+           
 
         }
         public Bateria(TamañoBateria bateriaMaxima)

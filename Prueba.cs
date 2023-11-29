@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TP_Integrador
@@ -11,24 +13,24 @@ namespace TP_Integrador
     {
         private Mundi mundo;
 
-        public Mundi mundoProperty { get; private set; }
+        //public Mundi mundoProperty { get; private set; }
 
-        
         public List<Cuartel> CuartelesProperty { get; private set; }
 
- 
+
 
         public Prueba()
         {
             mundo = new Mundi();
             CuartelesProperty = this.mundo.cuarteles;
+
+            
             CuartelesProperty.ElementAt(0).agregarOperador();
             CuartelesProperty.ElementAt(1).agregarOperador();
             CuartelesProperty.ElementAt(2).agregarOperador();
             CuartelesProperty.ElementAt(2).agregarOperador();
 
         }
-
 
         public void mostrarInfoCuarteles()
         {
@@ -52,7 +54,12 @@ namespace TP_Integrador
             path += "\\data";
             string filename = "\\archivoPrueba.json";
             Directory.CreateDirectory(path);
-            string data = JsonSerializer.Serialize(CuartelesProperty);
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true, // Hacer que la serialización sea insensible a mayúsculas y minúsculas
+                                                    // Otras opciones...
+            };
+            string data = JsonSerializer.Serialize(CuartelesProperty,options);
 
             File.WriteAllText(path + filename, data);
         }
@@ -66,18 +73,26 @@ namespace TP_Integrador
             List<Cuartel> cuarteles;
             try
             {
-                cuarteles = JsonSerializer.Deserialize<List<Cuartel>>(data);
-                
+                  cuarteles = JsonSerializer.Deserialize<List<Cuartel>>(data);
+               // cuarteles = JsonConvert.DeserializeObject(List<>);
+
+
                 foreach (Cuartel c in cuarteles)
                 {
                     Console.WriteLine("Cuartel en posicion[" + c.localizacion.filaProperty + "] [" + c.localizacion.columnaProperty + "]");
                     //c.mostraroOperadores();
+                    foreach(Operador op in c.Operadores)
+                    {
+                        op.mostrar();
+                       
+                    }
+                  
                 }
-
+                Console.WriteLine("funciona");
             }
             catch( Exception e)
             {
-                Console.WriteLine("Error al leer el archivo." + e);
+                Console.WriteLine("Error al leer el archivo." + e.ToString());
                 
             }   
         }

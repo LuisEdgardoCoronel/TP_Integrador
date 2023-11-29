@@ -84,10 +84,10 @@ namespace TP_Integrador
 
             MapaTerrestre mapaT = new MapaTerrestre(this.matriz, this.n, this.cuarteles, this.sitiosReciclaje,this.vertederos); /// Creamos un mapa a partir de nuestro mundo terrestre y otro aereo
             MapaAereo mapaA = new MapaAereo(this.matriz, this.n, this.cuarteles, this.sitiosReciclaje,this.vertederos);
-            foreach (Cuartel c in this.cuarteles)
+            /*foreach (Cuartel c in this.cuarteles)
             {
                 c.asignarMapas(mapaT,mapaA); //a cada cuartel le damos un mapa del mundo
-            }
+            }*/
 
         }
 

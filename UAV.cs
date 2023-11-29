@@ -14,20 +14,21 @@ namespace TP_Integrador
                         EstadoFisicoOp EstadoFisico, Bateria Bateria, Localizacion localizacion,
                         Localizacion localizacionCuartel, double velocidad,
                         string tipo, int cantKms, int cantEnergiaConsumida, int cantCargaTransportada,
-                        int cantInstrucciones, int cantDanios, Queue<Localizacion> ultimasUbicVisitadas,Mapa mapa) : base 
+                        int cantInstrucciones, int cantDanios, Queue<Localizacion> ultimasUbicVisitadas) : base 
             (Id,CargaMax,CargaActual,EstadoLogico,EstadoFisico,Bateria,localizacion,localizacionCuartel,
                             velocidad,tipo,cantKms,cantEnergiaConsumida,cantCargaTransportada,cantInstrucciones,
-                            cantDanios,ultimasUbicVisitadas,mapa)
+                            cantDanios,ultimasUbicVisitadas)
         {
 
         }
-       public UAV (Localizacion localizacion, MapaAereo mapa,String tipo) : base(localizacion)
+       public UAV (Localizacion localizacion,String tipo) : base(localizacion)
         {
             this.Bateria = new Bateria(TamañoBateria.pequeña);
             this.CargaMax = (int)CargaOperador.Baja;
             this.velocidad = 80;
-            this.mapa = mapa;
+            this.CargaActual = this.CargaMax;
             this.tipo = tipo;
+         
         }
 
        

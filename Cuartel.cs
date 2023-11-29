@@ -13,21 +13,17 @@ namespace TP_Integrador
     {
        public List<Operador> Operadores { get;  set; }
         public Localizacion localizacion { get;  set; }
-
-     
-        public MapaTerrestre mapaTerrestre { get;  set; }
- 
-        public MapaAereo mapaAereo { get;  set; }
+     //   public List <OpAuxiliar> opAuxiliares { get; set; }
 
 
 
         [JsonConstructor]
-        public Cuartel (Localizacion localizacion, List<Operador> Operadores, MapaTerrestre mapaTerrestre, MapaAereo mapaAereo)
+        public Cuartel (List<Operador> Operadores, Localizacion localizacion )
         {
-            this.localizacion = localizacion;
             this.Operadores = Operadores;
-            this.mapaAereo = mapaAereo;
-            this.mapaTerrestre = mapaTerrestre;
+            this.localizacion = localizacion;
+          
+           
         }
 
 
@@ -35,15 +31,12 @@ namespace TP_Integrador
         public Cuartel(int fila,int columna) {       // Constructor
           this.localizacion = new Localizacion(fila,columna);
           this.Operadores = new List<Operador>();
-           
+            //this.opAuxiliares = new List<OpAuxiliar>(); 
 
         }
 
-     public void asignarMapas(MapaTerrestre mT, MapaAereo mA)   //Le damos un mapa del mundo a nuestro cuartel, al momento de crear el mundo, se le asigna 
-        {                                                      //a cada cuartel un mapa
-            this.mapaTerrestre = mT;
-            this.mapaAereo = mA;
-        }
+
+
       
 
        
@@ -69,35 +62,35 @@ namespace TP_Integrador
             }
         }
         
-     public void recallCuartel()              //Llama a todos los operadores al cuartel
+     public void recallCuartel(Mapa mapa)              //Llama a todos los operadores al cuartel
         {
             for (int i = 0; i < this.Operadores.Count; i++)
             {
                 Operador op = this.Operadores[i];
-                op.volverAlCuartel(); 
+                op.volverAlCuartel(mapa); 
             }
         }
 
         
-        public void recallCuartel(int Id)   //Llama a un operador especifico al cuartel
+        public void recallCuartel(int Id,Mapa mapa)   //Llama a un operador especifico al cuartel
         {
             int posicion = estaEnLista(Id);
 
             if (posicion >= 0)
             {
-                this.Operadores[posicion].volverAlCuartel();
+                this.Operadores[posicion].volverAlCuartel(mapa);
             }
             else Console.WriteLine("No se encontro Operador con Id ["+Id+"]");
         }
 
-        public void enviarOperador(int Id, Localizacion localizacion)   //Envia a un operador especifico a una det. localizacion
+        public void enviarOperador(int Id, Localizacion localizacion,Mapa mapa)   //Envia a un operador especifico a una det. localizacion
         {                                                                         ///Recibe  el Id del operador, la ubiacion a mandaro y el mundo donde esta
             int posicion = estaEnLista(Id);
 
             if (posicion >= 0)
             {
 
-                this.Operadores[posicion].moverse(localizacion);  ///Indicamos al operador que se mueva, el sera el encargado de trazar en us mapa la ruta
+                this.Operadores[posicion].moverse(localizacion, mapa);  ///Indicamos al operador que se mueva, el sera el encargado de trazar en us mapa la ruta
 
 
             }                                                        
@@ -146,11 +139,11 @@ namespace TP_Integrador
 
             switch (tipo)
             {
-                case 1: op = new UAV(this.localizacion,mapaAereo,"Aereo");  ///Recibe la localizacion del cuartel. Idem para los demas
+                case 1: op = new UAV(this.localizacion,"Aereo");  ///Recibe la localizacion del cuartel. Idem para los demas
                     break;                                      
-                case 2: op = new M8(this.localizacion,mapaTerrestre,"Terrestre");  ///Indicamos ademas el tipo de operador
+                case 2: op = new M8(this.localizacion,"Terrestre");  ///Indicamos ademas el tipo de operador
                     break;
-                case 3: op = new K9(this.localizacion, mapaTerrestre,"Terrestre");
+                case 3: op = new K9(this.localizacion,"Terrestre");
                     break;
                 default: Console.WriteLine("Error. No se eligio tipo de Operador.");
                     break;
@@ -215,38 +208,38 @@ namespace TP_Integrador
              actualmente deben dirigirse al vertedero más cercano y recoger su
              cantidad máxima de carga para traer al sitio de reciclaje más cercano.*/
 
-        public void cargayDescargaFisica()
+        public void cargayDescargaFisica(Mapa mapa)
         {
             foreach(Operador op in this.Operadores)
             {
                 if(op.CargaActual < op.CargaMax)
                 {
-                    op.moverseVertederoCercano();
-                    op.moverseSitioReciclajeCercano();
+                    op.moverseVertederoCercano(mapa);
+                    op.moverseSitioReciclajeCercano(mapa);
                 }
             }
         }
 
-        public void repararOperadores()
+        public void repararOperadores(Mapa mapa)
         {
             foreach(Operador op in this.Operadores)
             {
                 if(op.EstadoFisico != EstadoFisicoOp.BuenEstado)
                 {
-                    op.volverAlCuartel();
+                    op.volverAlCuartel(mapa);
                     op.RepararOperador();
                 }
             }
 
         }
 
-        public void reemplazarBateria()
+        public void reemplazarBateria(Mapa mapa)
         {
             foreach (Operador op in this.Operadores)
             {
                 if (op.Bateria.estado!=EstadoBateria.BuenEstado)
                 {
-                    op.volverAlCuartel();
+                    op.volverAlCuartel(mapa);
                     op.ReemplazarBateria();
                 }
             }

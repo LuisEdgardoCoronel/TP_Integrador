@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TP_Integrador
@@ -12,13 +13,16 @@ namespace TP_Integrador
 
         public int filaProperty { get;  set; }
         public int columnaProperty { get;  set; }
-     
 
 
+        public Localizacion() { }
+
+        [JsonConstructor]
         public Localizacion(int filaProperty, int columnaProperty)
         {
-            this.columnaProperty = columnaProperty;
             this.filaProperty = filaProperty;
+            this.columnaProperty = columnaProperty;
+            
            
         }
 
