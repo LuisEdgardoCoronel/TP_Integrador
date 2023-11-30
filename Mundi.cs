@@ -14,18 +14,18 @@ namespace TP_Integrador
 
         private Nodo[,] matriz { get; set; }
 
-        /// n es el tamaño del mundo
-
         public List<Nodo> terrenos { get; set; }  // almacena los datos de matriz para poder serializar
 
-        public int n { get; set; }
+        public int n { get; set; } //n es el tamaño del mundo
 
-        public List<Cuartel> cuarteles { get; set; }
+        public List<Cuartel> cuarteles { get; set; } //lista de cuarteles del mundo
 
-        public List<SitioReciclaje> sitiosReciclaje { get; set; }
+        public List<SitioReciclaje> sitiosReciclaje { get; set; } //lista de sitios de reciclaje del mundo
 
-        public List<Localizacion> vertederos { get; set; }
-        /// Constructor 
+        public List<Localizacion> vertederos { get; set; } //lista de vertederos del mundo (se decidio guardar las
+                                                           //localizaciones de los vertederos para facilitar la
+                                                           //ejecucion de ciertos metodos)
+       
 
         [JsonConstructor]
         public Mundi(List<Nodo> terrenos, int n,List<Cuartel> cuarteles, List<SitioReciclaje> sitiosReciclaje, List<Localizacion> vertederos)
@@ -50,10 +50,6 @@ namespace TP_Integrador
             terrenos = Convert.convertMatriceToList(this.matriz);
         }
 
-       
-
-
-
         public void cargarMundi()
         {
             
@@ -62,9 +58,7 @@ namespace TP_Integrador
 
             for (int i = 1; i <= n; i++)
             {
-                
-
-                //recorremos cada carecter de la cadena leida
+               
                 for (int j = 1; j <= n; j++)
                 {
                     Nodo nodo = new Nodo();
@@ -79,14 +73,8 @@ namespace TP_Integrador
                 }
             }
 
-            cambiarTerreno(3,5);
-
-            /*MapaTerrestre mapaT = new MapaTerrestre(this.matriz, this.n, this.cuarteles, this.sitiosReciclaje,this.vertederos); /// Creamos un mapa a partir de nuestro mundo terrestre y otro aereo
-            MapaAereo mapaA = new MapaAereo(this.matriz, this.n, this.cuarteles, this.sitiosReciclaje,this.vertederos);
-            foreach (Cuartel c in this.cuarteles)
-            {
-                c.asignarMapas(mapaT,mapaA); //a cada cuartel le damos un mapa del mundo
-            }*/
+            cambiarTerreno(3,5); // luego de cargar el terreno, se lo limpia para crear un cuartel(como maximo 3)
+                                 // o un sitio de reciclaje (como maximo 5).
 
         }
 
@@ -102,8 +90,6 @@ namespace TP_Integrador
             
             return terreno;
         }
-
-
 
 
         private Terreno creaTerreno(int tipo,int i,int j) //metodo para modularizar la manera de crear un tipo de terreno a partir de 
@@ -131,9 +117,6 @@ namespace TP_Integrador
             return terreno;
         }
 
-
-
-
         public void imprimirMundi()
         {
             for (int i = 1; i <= n; i++)
@@ -141,15 +124,14 @@ namespace TP_Integrador
                 Console.WriteLine();
                 for (int j = 1; j <= n; j++)
                 {
-                    Console.Write((matriz[i, j]).tipo);
+                    Console.Write((matriz[i, j]).GetType().Name); 
                 }
             }
 
         }
 
-
-
-        private void cambiarTerreno(int cantidadMaxCuartel,int cantidadMaxReciclaje) 
+        private void cambiarTerreno(int cantidadMaxCuartel,int cantidadMaxReciclaje) //cambia el terreno por un cuartel
+                                                                                    // o por un sitio de reciclaje
         {
 
               crearCuartel();
@@ -166,8 +148,6 @@ namespace TP_Integrador
                       crearCuartel();
 
                   }
-
-
              }
 
             for (int i = 0; i < cantidadMaxReciclaje - 1; i++)
@@ -180,12 +160,8 @@ namespace TP_Integrador
                     crearSitioReciclaje();
 
                 }
-
-
             }
-
         }
-
 
         private void crearCuartel() 
         { 
@@ -197,7 +173,6 @@ namespace TP_Integrador
               this.cuarteles.Add((Cuartel)terreno);
         }
 
-
         private void crearSitioReciclaje()
         {
             Random rnd = new Random();
@@ -208,8 +183,10 @@ namespace TP_Integrador
             this.sitiosReciclaje.Add((SitioReciclaje)terreno);
         }
 
-        
-    
+        public Nodo[,] getMatrizNodo()
+        {
+            return this.matriz;
+        }
 
     }
 }

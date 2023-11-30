@@ -1,11 +1,17 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using TP_Integrador;
 
+Console.WriteLine("BIENVENIDOS AL SISTEMA DE SKYNET");
+
 
 SkyNet prueba = new SkyNet();
-//prueba.mostrarInfoCuarteles();
-prueba.guardarInfo();
-prueba.leerInfo();
+
+/*
+ * 
+ * 
+ * 
+ *
+ */
 
 
 

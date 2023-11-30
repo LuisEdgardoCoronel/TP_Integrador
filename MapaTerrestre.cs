@@ -10,15 +10,10 @@ namespace TP_Integrador
     internal class MapaTerrestre : Mapa
     {
        
-      
-
         public MapaTerrestre(Nodo[,] matriz,  List<Cuartel> cuarteles, List<SitioReciclaje> sReciclaje, List<Localizacion> vertederos) :base(matriz,cuarteles,sReciclaje, vertederos)
         {
             
         }
-
-       
-
 
         public Stack<Nodo> devolverCaminoDirecto(Localizacion ubiInicial,Localizacion ubiFinal)
         {
@@ -44,9 +39,6 @@ namespace TP_Integrador
 
             return pila;
         }
-
-
-        
 
         private void recorridoDirecto()
         {

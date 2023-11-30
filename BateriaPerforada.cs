@@ -10,8 +10,8 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
-           
-            operador.Bateria.estado =EstadoBateria.Perforada;
+
+            operador.Bateria.estado = EstadoBateria.Perforada;
 
         }
     }

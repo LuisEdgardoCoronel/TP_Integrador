@@ -14,10 +14,6 @@ namespace TP_Integrador
         public double bateriaActual { get; set; }
         public EstadoBateria estado { get; set; }
 
-        public Bateria()
-        {
-
-        }
 
         [JsonConstructor]
         public Bateria(TamañoBateria tipoBateria, double bateriaMaxima, double bateriaActual, EstadoBateria estado) {
@@ -51,9 +47,6 @@ namespace TP_Integrador
             }
         }
 
-
-
-
         public void DescargarBateria(int cantidad)
         {
             if (cantidad > 0 && bateriaActual - cantidad >= 0)
@@ -65,9 +58,6 @@ namespace TP_Integrador
                 Console.WriteLine("No se pudo descargar la batería. La cantidad es inválida o excede la carga actual.");
             }
         }
-
-
-
 
         public void RecargarBateriaCompleta()
         {

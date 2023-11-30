@@ -9,18 +9,11 @@ namespace TP_Integrador
 {
     internal class MapaAereo : Mapa
     {
-        /// se asume que los nodos adyacentes a un vertice son 4, y estan dados por el que esta arriba(Norte), abajo(Sur), este(Derecha), oeste(izquieda)
-        /// <b>dx</b> es la variacion en la columna
-       
-
-
   
         public MapaAereo(Nodo[,] matriz, List<Cuartel> cuarteles, List<SitioReciclaje> sReciclaje, List<Localizacion> vertederos) : base(matriz, cuarteles, sReciclaje, vertederos)
         {
 
         }
-
-
 
         public Stack<Nodo> devolverCaminoDirecto(Localizacion ubiInicial, Localizacion ubiFinal)
         {
@@ -45,9 +38,6 @@ namespace TP_Integrador
 
             return pila;
         }
-
-
-
 
         private void recorridoDirecto()
         {

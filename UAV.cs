@@ -21,13 +21,13 @@ namespace TP_Integrador
         {
 
         }
-       public UAV (Localizacion localizacion,String tipo) : base(localizacion)
+       public UAV (Localizacion localizacion) : base(localizacion)
         {
             this.Bateria = new Bateria(TamañoBateria.pequeña);
             this.CargaMax = (int)CargaOperador.Baja;
             this.velocidad = 80;
             this.CargaActual = this.CargaMax;
-            this.tipo = tipo;
+            this.tipo = "Aereo";
          
         }
 

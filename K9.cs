@@ -21,12 +21,12 @@ namespace TP_Integrador
         {
 
         }
-        public K9(Localizacion localizacion,String tipo) : base(localizacion)
+        public K9(Localizacion localizacion) : base(localizacion)
         {
             this.Bateria = new Bateria(TamañoBateria.mediana);
             this.CargaMax = (int)CargaOperador.Media;
             this.velocidad = 100;
-            this.tipo = tipo;
+            this.tipo = "Terrestre";
             this.CargaActual = this.CargaMax;
             
         }
