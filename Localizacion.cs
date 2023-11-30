@@ -15,19 +15,15 @@ namespace TP_Integrador
         public int columnaProperty { get;  set; }
 
 
-        public Localizacion() { }
+        //public Localizacion() { }
 
         [JsonConstructor]
         public Localizacion(int filaProperty, int columnaProperty)
         {
             this.filaProperty = filaProperty;
             this.columnaProperty = columnaProperty;
-            
-           
+  
         }
-
-
-
 
         public bool equals(Localizacion local2) ///metodo nuevo para comparar localizaciones
         {

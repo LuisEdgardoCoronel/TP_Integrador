@@ -22,12 +22,12 @@ namespace TP_Integrador
 
         }
 
-        public M8(Localizacion localizacion,String tipo) : base(localizacion)
+        public M8(Localizacion localizacion) : base(localizacion)
         {
             this.Bateria = new Bateria(TamañoBateria.grande);
             this.CargaMax = (int)CargaOperador.Alta;
             this.velocidad = 110;
-            this.tipo = tipo;
+            this.tipo = "Terrestre";
             this.CargaActual = this.CargaMax;
         
         }

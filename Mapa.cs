@@ -38,13 +38,13 @@ namespace TP_Integrador
             this.vertederos = vertederos;
         }
 
-        protected void setInicio(int i, int j)
+        protected void setInicio(int i, int j) //setea la localizacion de partida
         {
             matriz[i, j].fila = i;
             matriz[i, j].columna = j;
             this.inicio = matriz[i, j];
         }
-        protected void setFin(int i, int j)
+        protected void setFin(int i, int j)  //setea la localizacion de destino
         {
             matriz[i, j].fila = i;
             matriz[i, j].columna = j;

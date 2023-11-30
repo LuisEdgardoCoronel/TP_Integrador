@@ -33,18 +33,11 @@ namespace TP_Integrador
             this.visitado= visitado;
             this.anterior= anterior;
         }
-        
-
-
+  
         public Nodo()
         {
             
         }
-       
-
 
     }
-
-     
-
 }
