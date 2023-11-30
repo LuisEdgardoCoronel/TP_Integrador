@@ -1,0 +1,14 @@
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\obj\Debug\net7.0\TP_Integrador.GeneratedMSBuildEditorConfig.editorconfig
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\obj\Debug\net7.0\TP_Integrador.AssemblyInfoInputs.cache
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\obj\Debug\net7.0\TP_Integrador.AssemblyInfo.cs
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\obj\Debug\net7.0\TP_Integrador.csproj.CoreCompileInputs.cache
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\bin\Debug\net7.0\TP_Integrador.exe
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\bin\Debug\net7.0\TP_Integrador.deps.json
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\bin\Debug\net7.0\TP_Integrador.runtimeconfig.json
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\bin\Debug\net7.0\TP_Integrador.dll
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\bin\Debug\net7.0\TP_Integrador.pdb
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\obj\Debug\net7.0\TP_Integrador.dll
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\obj\Debug\net7.0\refint\TP_Integrador.dll
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\obj\Debug\net7.0\TP_Integrador.pdb
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\obj\Debug\net7.0\TP_Integrador.genruntimeconfig.cache
+D:\CURSOS EXTRACURRICULARES\.NET NEORIS\Development\Programs\TP_Integrador\TP_Integrador\obj\Debug\net7.0\ref\TP_Integrador.dll
