@@ -10,9 +10,9 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
-           
-            operador.getBateria().SetEstadoBateria(EstadoBateria.PuertoDesconectado);
 
+            operador.Bateria.estado = EstadoBateria.PuertoDesconectado;
+            Console.WriteLine($"El operador {operador} sufrió daños: Puerto desconectado");
         }
     }
 }

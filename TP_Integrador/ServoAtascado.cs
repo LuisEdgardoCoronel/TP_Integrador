@@ -10,7 +10,8 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
-            operador.setEstado(EstadoOperador.ServoAtascado);
+            operador.EstadoFisico = EstadoFisicoOp.ServoAtascado;
+            Console.WriteLine($"El operador {operador} sufrió daños: Servo Atascado");
         }
     }
 }

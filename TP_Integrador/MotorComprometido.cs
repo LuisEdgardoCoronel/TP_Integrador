@@ -10,8 +10,9 @@ namespace TP_Integrador
     {
         public void ProducirDanio(Operador operador)
         {
-            double vel = operador.GetVelocidad();
-            operador.SetVelocidad(vel / 2);
+            double vel = operador.velocidad;
+            operador.velocidad = (vel / 2);
+            Console.WriteLine($"El operador {operador} sufrió daños: Motor comprometido");
         }
     }
 }
