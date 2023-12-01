@@ -8,46 +8,17 @@ namespace TP_Integrador
 {
     internal class MapaTerrestre : Mapa
     {
-        /// se asume que los nodos adyacentes a un vertice son 4, y estan dados por el que estza arriba(Norte), abajo(Sur), este(Derecha), oeste(izquieda)
-        /// <b>dx</b> es la variacion en la columna
-        public int[] dx { get; private set; } = { -1, 0, 1, 0 }; 
-
-        /// dy es la variacion en la fila para los vertices adyacentes, recuerde que ambos, tanto dy y dx combinados en la misma posicion forman el vertice adyacente aumentandole el valor
-        /// almacenado en el vector
-        public int[] dy { get; private set; } = { 0, -1, 0, 1 };
-
-        /// inicio es el vertice de partida
-        /// fin es el vertice objetivo o salida
-        public Nodo inicio { get; private set; }
-        public Nodo fin { get; private set; }
-
-       
-
-        public MapaTerrestre(Nodo[,] matriz, int n, List<Cuartel> cuarteles, List<SitioReciclaje> sReciclaje, List<Localizacion> vertederos) :base(matriz,n,cuarteles,sReciclaje, vertederos)
+        public MapaTerrestre(Nodo[,] matriz, List<Cuartel> cuarteles, List<SitioReciclaje> sReciclaje, List<Localizacion> vertederos) : base(matriz, cuarteles, sReciclaje, vertederos)
         {
-            
+
         }
 
-        private void setInicio(int i, int j)
+        public Stack<Nodo> devolverCaminoDirecto(Localizacion ubiInicial, Localizacion ubiFinal)
         {
-            matriz[i, j].setFila(i);
-            matriz[i, j].setColumna(j);
-            this.inicio = matriz[i, j];
-        }
-        private void setFin(int i, int j)
-        {
-            matriz[i, j].setFila(i);
-            matriz[i, j].setColumna(j);
-            this.fin = matriz[i, j];
-        }
 
 
-        public Stack<Nodo> devolverCaminoDirecto(Localizacion ubiInicial,Localizacion ubiFinal)
-        {
-            
-
-            setInicio(ubiInicial.getFila(),ubiInicial.getColumna());
-            setFin(ubiFinal.getFila(), ubiFinal.getColumna());
+            setInicio(ubiInicial.filaProperty, ubiInicial.columnaProperty);
+            setFin(ubiFinal.filaProperty, ubiFinal.columnaProperty);
 
             recorridoDirecto();
             Stack<Nodo> pila = new Stack<Nodo>();
@@ -57,7 +28,7 @@ namespace TP_Integrador
             while (actual != null)
             {
 
-                actual = actual.getAnterior();
+                actual = actual.anterior;
                 if (actual != null)
                 {
                     pila.Push(actual);
@@ -67,18 +38,15 @@ namespace TP_Integrador
             return pila;
         }
 
-
-        
-
         private void recorridoDirecto()
         {
 
 
             //iniciamos la distnaica del nodo inicio en cero
-            distancia[inicio.getFila(), inicio.getColumna()] = 0;
+            //  distancia[inicio.fila, inicio.columna] = 0;
 
             //marcamos el nodo como visitado
-            matriz[inicio.getFila(), inicio.getColumna()].setVisitado(true);
+            matriz[inicio.fila, inicio.columna].visitado = (true);
 
             //ingresamo el nodo en la cola
             cola.Enqueue(inicio);
@@ -93,17 +61,17 @@ namespace TP_Integrador
                 for (int i = 0; i < 4; i++)
                 {
                     //dy y dx nos ayudan a solamente sumar +1,-1 o 0 tanto en fila o columna para los cuatro vertices adycentes
-                    Nodo nodoAdy = matriz[nodoActual.getFila() + dy[i], nodoActual.getColumna() + dx[i]];
+                    Nodo nodoAdy = matriz[nodoActual.fila + dy[i], nodoActual.columna + dx[i]];
                     // si el nodo no es null , no ha sido visitado... si es un camino valido o es la salida
-                    if (nodoAdy != null && !nodoAdy.isVisitado() && (!(nodoAdy.getTipo() is Lago) || nodoAdy == this.fin)) //si es lago no es camino valido
+                    if (nodoAdy != null && !nodoAdy.visitado && (!(nodoAdy.tipo is Lago) || nodoAdy == this.fin)) //si es lago no es camino valido
                     {
                         //marcamos como visitado
 
-                        nodoAdy.setVisitado(true);
+                        nodoAdy.visitado = (true);
                         //incrementamos su distancia
-                        distancia[nodoAdy.getFila(), nodoAdy.getColumna()] = distancia[nodoActual.getFila(), nodoActual.getColumna()] + 1;
+                        //  distancia[nodoAdy.fila, nodoAdy.columna] = distancia[nodoActual.fila, nodoActual.columna] + 1;
                         //guardamos la referencia a su nodo anterior para trazar la ruta
-                        nodoAdy.setAnterior(nodoActual);
+                        nodoAdy.anterior = nodoActual;
                         //ingresamo el nuevo nodo descubierto a la cola
                         cola.Enqueue(nodoAdy);
 
@@ -121,8 +89,8 @@ namespace TP_Integrador
         public Stack<Nodo> devolverCaminoOptimo(Localizacion ubiInicial, Localizacion ubiFinal)
         {
 
-            setInicio(ubiInicial.getFila(), ubiInicial.getColumna());
-            setFin(ubiFinal.getFila(), ubiFinal.getColumna());
+            setInicio(ubiInicial.filaProperty, ubiInicial.columnaProperty);
+            setFin(ubiFinal.filaProperty, ubiFinal.columnaProperty);
 
             recorridoOptimo();
             Stack<Nodo> pila = new Stack<Nodo>();
@@ -132,7 +100,7 @@ namespace TP_Integrador
             while (actual != null)
             {
 
-                actual = actual.getAnterior();
+                actual = actual.anterior;
                 if (actual != null)
                 {
                     pila.Push(actual);
@@ -147,10 +115,10 @@ namespace TP_Integrador
 
 
             //iniciamos la distnaica del nodo inicio en cero
-            distancia[inicio.getFila(), inicio.getColumna()] = 0;
+            // distancia[inicio.fila, inicio.columna] = 0;
 
             //marcamos el nodo como visitado
-            matriz[inicio.getFila(), inicio.getColumna()].setVisitado(true);
+            matriz[inicio.fila, inicio.columna].visitado = (true);
 
             //ingresamo el nodo en la cola
             cola.Enqueue(inicio);
@@ -165,17 +133,17 @@ namespace TP_Integrador
                 for (int i = 0; i < 4; i++)
                 {
                     //dy y dx nos ayudan a solamente sumar +1,-1 o 0 tanto en fila o columna para los cuatro vertices adycentes
-                    Nodo nodoAdy = matriz[nodoActual.getFila() + dy[i], nodoActual.getColumna() + dx[i]];
+                    Nodo nodoAdy = matriz[nodoActual.fila + dy[i], nodoActual.columna + dx[i]];
                     // si el nodo no es null , no ha sido visitado... si es un camino valido o es la salida
-                    if (nodoAdy != null && !nodoAdy.isVisitado() && (caminoValido(nodoAdy.getTipo()) || nodoAdy == this.fin)) 
+                    if (nodoAdy != null && !nodoAdy.visitado && (caminoValido(nodoAdy.tipo) || nodoAdy == this.fin))
                     {
                         //marcamos como visitado
 
-                        nodoAdy.setVisitado(true);
+                        nodoAdy.visitado = (true);
                         //incrementamos su distancia
-                        distancia[nodoAdy.getFila(), nodoAdy.getColumna()] = distancia[nodoActual.getFila(), nodoActual.getColumna()] + 1;
+                        //  distancia[nodoAdy.fila, nodoAdy.columna] = distancia[nodoActual.fila, nodoActual.columna] + 1;
                         //guardamos la referencia a su nodo anterior para trazar la ruta
-                        nodoAdy.setAnterior(nodoActual);
+                        nodoAdy.anterior = nodoActual;
                         //ingresamo el nuevo nodo descubierto a la cola
                         cola.Enqueue(nodoAdy);
 
