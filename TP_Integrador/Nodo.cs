@@ -2,74 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TP_Integrador
 {
     internal class Nodo
     {
-        private int fila;
-        private int columna;
+        public int fila { get; set; }
+        public int columna { get; set; }
 
         /// tipo de Vertic, 'I'->Punto de inicio(partida), 'S'->Punto final(Salida), 'P'->No se puede pasar,  'X'->CAMINO VALIDO
-        private Terreno tipo;
+        public Terreno tipo { get; set; }
 
         /// Indica si el nodo ya ha sido visitado
 
-        private bool visitado;
+        public bool visitado { get; set; }
 
         /// Nodo anterior por el cual se debe seguir a la siguiente ruta
 
-        private Nodo? anterior;
+        public Nodo anterior { get; set; }
 
-        public int getFila()
-        {
-            return fila;
-        }
 
-        public void setFila(int fila)
+        [JsonConstructor]
+        public Nodo(int fila, int columna, Terreno tipo, bool visitado, Nodo anterior)
         {
             this.fila = fila;
-        }
-
-        public int getColumna()
-        {
-            return columna;
-        }
-
-        public void setColumna(int columna)
-        {
             this.columna = columna;
-        }
-
-        public Terreno getTipo()
-        {
-            return tipo;
-        }
-
-        public void setTipo(Terreno terreno)
-        {
-            this.tipo = terreno;
-        }
-
-        public bool isVisitado()
-        {
-            return visitado;
-        }
-
-        public void setVisitado(bool visitado)
-        {
+            this.tipo = tipo;
             this.visitado = visitado;
+            this.anterior = anterior;
         }
 
-        public Nodo? getAnterior()
+        public Nodo()
         {
-            return anterior;
-        }
 
-        public void setAnterior(Nodo n)
-        {
-            this.anterior = n;
         }
 
     }
