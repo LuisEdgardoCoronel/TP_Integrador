@@ -21,17 +21,18 @@ namespace TP_Integrador
 
         /// Nodo anterior por el cual se debe seguir a la siguiente ruta
 
+        [JsonIgnore]
         public Nodo anterior { get; set; }
 
 
         [JsonConstructor]
-        public Nodo(int fila, int columna, Terreno tipo, bool visitado, Nodo anterior)
+        public Nodo(int fila, int columna, Terreno tipo, bool visitado)
         {
             this.fila = fila;
             this.columna = columna;
             this.tipo = tipo;
-            this.visitado = visitado;
-            this.anterior = anterior;
+            this.visitado = false;
+            this.anterior = null;
         }
 
         public Nodo()
