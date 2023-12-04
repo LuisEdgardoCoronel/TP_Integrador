@@ -22,7 +22,7 @@ namespace TP_Integrador
         public List<Cuartel> cuarteles { get; set; } //lista de cuarteles del mundo
 
         public List<SitioReciclaje> sitiosReciclaje { get; set; } //lista de sitios de reciclaje del mundo
-
+        [JsonIgnore]
         public List<Localizacion> vertederos { get; set; } //lista de vertederos del mundo (se decidio guardar las
                                                            //localizaciones de los vertederos para facilitar la
                                                            //ejecucion de ciertos metodos)
@@ -35,7 +35,7 @@ namespace TP_Integrador
             this.terrenos = terrenos;
             this.cuarteles = cuarteles;
             this.sitiosReciclaje = sitiosReciclaje;
-            this.vertederos = vertederos;
+            this.vertederos = crearListaVertederos();
             this.matriz = Convert.convertListToMatrice(terrenos);
         }
 
@@ -46,9 +46,9 @@ namespace TP_Integrador
             matriz = new Nodo[n + 2, n + 2]; //se suma +2,para permitir realiazr consultas adyacentes y no desborde la matriz     
             cuarteles = new List<Cuartel>();
             sitiosReciclaje = new List<SitioReciclaje>();
-            vertederos = new List<Localizacion>();
             cargarMundi();
             terrenos = Convert.convertMatriceToList(this.matriz);
+            vertederos = crearListaVertederos();
         }
 
         public void cargarMundi()
@@ -196,5 +196,22 @@ namespace TP_Integrador
             return this.matriz;
         }
 
+
+
+        private List<Localizacion> crearListaVertederos()
+        {
+            List<Localizacion> listaVertederos = new List<Localizacion>();
+
+            foreach (Nodo nodo in this.terrenos)
+            {
+                if (nodo.tipo is Vertedero)
+                {
+                    listaVertederos.Add(new Localizacion(nodo.fila, nodo.columna));
+                }
+            }
+
+            return listaVertederos;
+
+        }
     }
 }
