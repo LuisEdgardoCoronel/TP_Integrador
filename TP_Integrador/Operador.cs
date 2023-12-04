@@ -394,7 +394,7 @@ namespace TP_Integrador
         {
             if (this.EstadoLogico != EstadoLogicoOp.StandBy)
             {
-                if (this.localizacion.equals(this.localizacionCuartel)) /// pregunta si ya se encuentra en el cuartel
+                if (!this.localizacion.equals(this.localizacionCuartel)) /// pregunta si ya se encuentra en el cuartel
                 {
 
                     moverse(this.localizacionCuartel, mapa);
