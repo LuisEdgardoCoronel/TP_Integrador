@@ -73,11 +73,10 @@ namespace TP_Integrador
 
         public void recallCuartel()              //Llama a todos los operadores al cuartel
         {
-            for (int i = 0; i < this.Operadores.Count(); i++)
-            {
-                Operador op = this.Operadores[i];
+            foreach (Operador op in this.Operadores)
+            {   
                 if (op.tipo == TipoOp.Terrestre)
-                    op.volverAlCuartel(this.mapaTerrestre);
+                op.volverAlCuartel(this.mapaTerrestre);
                 else op.volverAlCuartel(this.mapaAereo);
             }
         }
