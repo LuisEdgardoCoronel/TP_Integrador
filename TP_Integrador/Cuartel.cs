@@ -69,6 +69,8 @@ namespace TP_Integrador
         }
 
 
+
+
         public void recallCuartel()              //Llama a todos los operadores al cuartel
         {
             for (int i = 0; i < this.Operadores.Count(); i++)
@@ -79,6 +81,9 @@ namespace TP_Integrador
                 else op.volverAlCuartel(this.mapaAereo);
             }
         }
+
+
+
 
 
         public void recallCuartel(int Id)   //Llama a un operador especifico al cuartel
@@ -93,6 +98,10 @@ namespace TP_Integrador
             }
             else Console.WriteLine("No se encontro Operador con Id [" + Id + "]");
         }
+
+
+
+
 
         public void enviarOperador(int Id, Localizacion localizacion)   //Envia a un operador especifico a una det. localizacion
         {
@@ -111,6 +120,10 @@ namespace TP_Integrador
             }
 
         }
+
+
+
+
 
         public void standBy(int Id)                 //Establece el estado de un operador especificado por su Id, en StandBy
         {
@@ -131,105 +144,57 @@ namespace TP_Integrador
 
         public void agregarOperador()                     //Crea y agrega un nuevo operador a la lista de operadores del Cuartel
         {
-            Operador op = cargarOperador();
-            if (op != null)
+            List<Operador> list = new List<Operador>()
             {
+                new M8(this.localizacion),
+                new UAV(this.localizacion),
+                new K9(this.localizacion)
+            };
 
-                this.Operadores.Add(op);
-            }
-            else Console.WriteLine("No se pudo crear el operador.");
-        }
-
-
-        private Operador cargarOperador()                //Metodo privado encargado de crear un nuevo Operador
-        {
-            Operador op = null;
-
-            short tipo = tipoOperador();
-
-
-            switch (tipo)
-            {
-                case 1:
-                    op = new UAV(this.localizacion);  ///Recibe la localizacion del cuartel. Idem para los demas y su tipo determinaod
-                    break;
-                case 2:
-                    op = new M8(this.localizacion);
-                    break;
-                case 3:
-                    op = new K9(this.localizacion);
-                    break;
-                default:
-                    Console.WriteLine("Error. No se eligio tipo de Operador.");
-                    break;
-
-            }
-            Console.WriteLine("Se creo el operador!");
-
-            return op;
-
-        }
-
-
-        private short tipoOperador()   //Metodo privado encargado de determinar el tipo de Operador que se desea crear
-        {
-            short tipo = 0;
-
+            short opcion = -1;
             do
             {
+                Console.WriteLine("Elija el operador");
                 try
                 {
-                    Console.Clear();
-                    Console.WriteLine("Ingrese que tipo de operador desea crear: " +
-                                 "\n 1 - UAV" +
-                                 "\n 2 - M8" +
-                                 "\n 3 - K9");
-                    Console.Write("\nSu opcion: ");
-                    tipo = short.Parse(Console.ReadLine());
-                    if (tipo < 1 || tipo > 3)
-                        Console.WriteLine("Tipo de operador erroneo. Ingrese nuevamente una opcion valida.");
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        Console.WriteLine($"{i}: {list.ElementAt(i).GetType().Name}");
+                        opcion = short.Parse(Console.ReadLine());
+                    }
                 }
-                catch (Exception e)
+                catch (FormatException)
                 {
-                    Console.WriteLine("Ingrese un valor correcto.");
-                    Console.WriteLine("Pulse una tecla para continuar.....");
-                    Console.ReadKey();
-                    Console.Clear();
-
+                    Console.WriteLine("La respuesta debe ser numerica");
                 }
+            } while (opcion < 0 || opcion >= list.Count);
 
-            } while (tipo < 1 || tipo > 3);
-
-            return tipo;
+            Operador operador = list.ElementAt(opcion);
+            this.Operadores.Add(operador);
+            Console.WriteLine("El operador fue creado con exito!");
 
         }
 
-        public int estaEnLista(int Id)            //Metodo privado utilizado para determinar si un Operador se encuentra en la lista
-        {                                          //del cuartel, si se encuentra: devuelve la posicion de dicho Operador
-            int posicion = -1;                     //caso contrario devuelve -1
 
-            for (int i = 0; i < this.Operadores.Count(); i++)
-            {
-                if (this.Operadores[i].Id == Id) posicion = i;
-            }
-            return posicion;
+
+        public int estaEnLista(int Id)            //si un Operador se encuentra en la lista
+        {                                          //devuelve la posicion de dicho Operador
+            return this.Operadores.FindIndex(x => x.Id == Id);//si no esta devuelve -1
         }
+
+
+
+
 
         public void removerOperador(int Id)             //Elimina un Operador especifico pasado por Id de la lista de Operadores del Cuartel
         {
-            int posicion = estaEnLista(Id);
-
-            if (posicion >= 0)
-            {
-                this.Operadores.RemoveAt(posicion);
-                Console.WriteLine("Operador eliminado!");
-            }
-            else
-            {
-                Console.WriteLine("No se encontro Operador con Id [" + Id + "]");
-            }
-
+            int cantidad = this.Operadores.RemoveAll(x => x.Id == Id);
+            if (cantidad > 0) Console.WriteLine("Operador eliminado!");
+            else Console.WriteLine("No se encontró Operador con Id [" + Id + "]");
         }
+
+
+
 
 
         public void mostrarOperadores() //muestra Id de los operadores de la lista del cuartel
@@ -267,6 +232,10 @@ namespace TP_Integrador
             }
         }
 
+
+
+
+
         public void repararOperadores()           // va a llamar a todos los operadores a us respectivo cuartel
         {                                        //para que sean reparados, algunos podrian no llegar al cuartel por su bateria 
             foreach (Operador op in this.Operadores)
@@ -290,6 +259,9 @@ namespace TP_Integrador
 
         }
 
+
+
+
         public void reemplazarBateria()
         {
             foreach (Operador op in this.Operadores)
@@ -299,7 +271,6 @@ namespace TP_Integrador
                     if (op.tipo == TipoOp.Terrestre)
                     {
                         op.volverAlCuartel(this.mapaTerrestre);
-
                     }
                     else
                     {
@@ -312,6 +283,10 @@ namespace TP_Integrador
                 }
             }
         }
+
+
+
+
 
         public void mostrarLocalizacion() //muestra localizacion del cuartel
         {
