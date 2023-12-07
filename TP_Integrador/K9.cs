@@ -14,7 +14,7 @@ namespace TP_Integrador
         public K9(int Id, int CargaMax, int CargaActual, EstadoLogicoOp EstadoLogico,
                        EstadoFisicoOp EstadoFisico, Bateria Bateria, Localizacion localizacion,
                        Localizacion localizacionCuartel, double velocidad,
-                       string tipo, int cantKms, int cantEnergiaConsumida, int cantCargaTransportada,
+                       TipoOp tipo, int cantKms, int cantEnergiaConsumida, int cantCargaTransportada,
                        int cantInstrucciones, int cantDanios, Queue<Localizacion> ultimasUbicVisitadas) : base
            (Id, CargaMax, CargaActual, EstadoLogico, EstadoFisico, Bateria, localizacion, localizacionCuartel,
                            velocidad, tipo, cantKms, cantEnergiaConsumida, cantCargaTransportada, cantInstrucciones,
@@ -27,7 +27,7 @@ namespace TP_Integrador
             this.Bateria = new Bateria(TamañoBateria.mediana);
             this.CargaMax = (int)CargaOperador.Media;
             this.velocidad = 100;
-            this.tipo = "Terrestre";
+            this.tipo = TipoOp.Terrestre;
             this.CargaActual = this.CargaMax;
 
         }
