@@ -16,7 +16,7 @@ namespace TP_Integrador
         public Terreno tipo { get; set; }
 
         /// Indica si el nodo ya ha sido visitado
-
+        [JsonIgnore]
         public bool visitado { get; set; }
 
         /// Nodo anterior por el cual se debe seguir a la siguiente ruta
@@ -26,7 +26,7 @@ namespace TP_Integrador
 
 
         [JsonConstructor]
-        public Nodo(int fila, int columna, Terreno tipo, bool visitado)
+        public Nodo(int fila, int columna, Terreno tipo)
         {
             this.fila = fila;
             this.columna = columna;
