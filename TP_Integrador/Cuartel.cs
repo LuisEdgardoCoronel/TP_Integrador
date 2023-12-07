@@ -74,7 +74,7 @@ namespace TP_Integrador
             for (int i = 0; i < this.Operadores.Count(); i++)
             {
                 Operador op = this.Operadores[i];
-                if (op.tipo == "Terrestre")
+                if (op.tipo == TipoOp.Terrestre)
                     op.volverAlCuartel(this.mapaTerrestre);
                 else op.volverAlCuartel(this.mapaAereo);
             }
@@ -87,7 +87,7 @@ namespace TP_Integrador
 
             if (posicion >= 0)
             {
-                if (this.Operadores[posicion].tipo == "Terrestre")
+                if (this.Operadores[posicion].tipo == TipoOp.Terrestre)
                     this.Operadores[posicion].volverAlCuartel(this.mapaTerrestre);
                 else this.Operadores[posicion].volverAlCuartel(this.mapaAereo);
             }
@@ -100,7 +100,7 @@ namespace TP_Integrador
 
             if (posicion >= 0)
             {
-                if (this.Operadores[posicion].tipo == "Terrestre")
+                if (this.Operadores[posicion].tipo == TipoOp.Terrestre)
                     this.Operadores[posicion].moverse(localizacion, this.mapaTerrestre);
                 else this.Operadores[posicion].moverse(localizacion, this.mapaAereo);
 
@@ -252,7 +252,7 @@ namespace TP_Integrador
                 if (op.CargaActual < op.CargaMax) //operadores que no tengan su carga maxima van a moverse al vertedero
                 {                                 //mas cercano para recoger su carga maxima y luego ir al sitio
                                                   //de reciclaje mas cercano para su descarga
-                    if (op.tipo == "Terreste")
+                    if (op.tipo == TipoOp.Terrestre)
                     {
                         op.moverseVertederoCercano(mapaTerrestre);
                         op.moverseSitioReciclajeCercano(mapaTerrestre);
@@ -273,7 +273,7 @@ namespace TP_Integrador
             {
                 if (op.EstadoFisico != EstadoFisicoOp.BuenEstado)
                 {
-                    if (op.tipo == "Terreste")
+                    if (op.tipo == TipoOp.Terrestre)
                     {
                         op.volverAlCuartel(this.mapaTerrestre);
 
@@ -296,7 +296,7 @@ namespace TP_Integrador
             {
                 if (op.Bateria.estado != EstadoBateria.BuenEstado)
                 {
-                    if (op.tipo == "Terreste")
+                    if (op.tipo == TipoOp.Terrestre)
                     {
                         op.volverAlCuartel(this.mapaTerrestre);
 
