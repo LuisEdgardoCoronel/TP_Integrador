@@ -23,7 +23,6 @@ namespace TP_Integrador
         {
             this.Operadores = Operadores;
             this.localizacion = localizacion;
-
         }
 
 
@@ -32,9 +31,9 @@ namespace TP_Integrador
         {
             this.localizacion = new Localizacion(fila, columna);
             this.Operadores = new List<Operador>();
-
-
         }
+
+
 
         public void asignarMapas(MapaTerrestre mapaT, MapaAereo mapaA)
         {
@@ -44,31 +43,31 @@ namespace TP_Integrador
 
 
 
-        public void estadoLogico()                      //Muestra el estado actual de todos los operadores del cuartel
+        public void estadoLogico()                      //Muestra el estado logico actual de todos los operadores del cuartel
         {
             if (this.Operadores.Count() != 0)
             {
-                for (int i = 0; i < this.Operadores.Count; i++)
+                foreach (Operador op in this.Operadores)
                 {
-                    Operador op = this.Operadores[i];
                     Console.WriteLine($"Operador {op.GetType().Name} con Id: [{op.Id}]. Estado = {op.EstadoLogico}");
                 }
             }
             else Console.WriteLine("No hay Operadores en la lista.");
-
         }
+
+
 
         public void estadoLogico(Localizacion localizacion)  //Muestra el estado actual de los operadores que se encuentran en una det. localizacion
         {
-            for (int i = 0; i < this.Operadores.Count; i++)
+            foreach (Operador op in this.Operadores)
             {
-                Operador op = this.Operadores[i];
                 if (op.localizacion.equals(localizacion))
                 {
                     Console.WriteLine($"Operador {op.GetType().Name} con Id: [{op.Id}]. Estado = {op.EstadoLogico}");
                 }
             }
         }
+
 
         public void recallCuartel()              //Llama a todos los operadores al cuartel
         {
