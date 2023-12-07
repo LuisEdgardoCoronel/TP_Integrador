@@ -11,7 +11,7 @@ namespace TP_Integrador
         public void ProducirDanio(Operador operador)
         {
 
-            operador.Bateria.estado = EstadoBateria.PuertoDesconectado;
+            operador.CambiarEstadoBateria(EstadoBateria.PuertoDesconectado);
             Console.WriteLine($"El operador {operador} sufrió daños: Puerto desconectado");
         }
     }
