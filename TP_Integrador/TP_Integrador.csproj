@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Daños\" />
+    <Folder Include="Operadores\" />
+    <Folder Include="Terrenos\" />
+  </ItemGroup>
+
 </Project>
