@@ -28,17 +28,17 @@ namespace TP_Integrador
         }
         public Bateria(TamañoBateria bateriaMaxima)
         {
-            this.tipoBateria = bateriaMaxima;
+            tipoBateria = bateriaMaxima;
             this.bateriaMaxima = (double)bateriaMaxima;
-            this.bateriaActual = (double)bateriaMaxima; // Inicializar la carga actual como la capacidad máxima al principio
-            this.estado = EstadoBateria.BuenEstado;
+            bateriaActual = (double)bateriaMaxima; // Inicializar la carga actual como la capacidad máxima al principio
+            estado = EstadoBateria.BuenEstado;
         }
 
 
 
         public void CargarBateria(int cantidad)
         {
-            if ((cantidad > 0) && (bateriaActual + cantidad <= bateriaMaxima))
+            if (cantidad > 0 && bateriaActual + cantidad <= bateriaMaxima)
             {
                 bateriaActual += cantidad;
             }
