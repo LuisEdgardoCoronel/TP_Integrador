@@ -143,12 +143,12 @@ namespace TP_Integrador
 
         public void agregarOperador()                     //Crea y agrega un nuevo operador a la lista de operadores del Cuartel
         {
-            List<Operador> list = new List<Operador>()
+            Dictionary<short, Func<Localizacion, Operador>> operadores = new Dictionary<short, Func<Localizacion, Operador>>()
             {
-                new M8(this.localizacion),
-                new UAV(this.localizacion),
-                new K9(this.localizacion)
-            };
+                {0, (localizacion) => new M8(localizacion)},
+                {1, (localizacion) => new UAV(localizacion)},
+                {2, (localizacion) => new K9(localizacion)}
+            }; 
 
             short opcion = -1;
             do
@@ -156,19 +156,18 @@ namespace TP_Integrador
                 Console.WriteLine("Elija el operador");
                 try
                 {
-                    for (int i = 0; i < list.Count; i++)
-                    {
-                        Console.WriteLine($"{i}: {list.ElementAt(i).GetType().Name}");
-                        opcion = short.Parse(Console.ReadLine());
-                    }
+                    Console.WriteLine("0: M8\n1: UAV\n2: K9");
+                    opcion = short.Parse(Console.ReadLine());
                 }
                 catch (FormatException)
                 {
                     Console.WriteLine("La respuesta debe ser numerica");
                 }
-            } while (opcion < 0 || opcion >= list.Count);
+            } while (opcion < 0 || opcion >= operadores.Count);
 
-            Operador operador = list.ElementAt(opcion);
+            Func<Localizacion, Operador> expresion = operadores[opcion];
+            Localizacion localizacionOp = new Localizacion(this.localizacion.filaProperty,this.localizacion.columnaProperty);
+            Operador operador = expresion(localizacionOp);
             this.Operadores.Add(operador);
             Console.WriteLine("El operador fue creado con exito!");
 
