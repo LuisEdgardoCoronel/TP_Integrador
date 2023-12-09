@@ -26,6 +26,16 @@ namespace TP_Integrador
         public List<Localizacion> vertederos { get; set; } //lista de vertederos del mundo (se decidio guardar las
                                                            //localizaciones de los vertederos para facilitar la
                                                            //ejecucion de ciertos metodos)
+        private List<Terreno> listarTerrenos = new List<Terreno>()
+            {
+                new Baldio(),
+                new Planicie(),
+                new Bosque(),
+                new Urbano(),
+                new Vertedero(),
+                new Lago(),
+                new VertederoElectronico()
+            };
 
 
         [JsonConstructor]
@@ -79,17 +89,6 @@ namespace TP_Integrador
         private Terreno terrenoRandom()  //devuelve una clase de terreno determinado de manera aleatoria
         {                                           
             Random rnd = new Random();
-            List<Terreno> listarTerrenos = new List<Terreno>()
-            {
-                new Baldio(),
-                new Planicie(),
-                new Bosque(),
-                new Urbano(),
-                new Vertedero(),
-                new Lago(),
-                new VertederoElectronico()
-            };
-
             int indice = rnd.Next(0, listarTerrenos.Count);
             return listarTerrenos.ElementAt(indice);
         }
