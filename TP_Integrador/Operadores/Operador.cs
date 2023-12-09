@@ -5,7 +5,6 @@ using System.Numerics;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using TP_Integrador.Operadores;
 
 namespace TP_Integrador
 {
@@ -19,7 +18,7 @@ namespace TP_Integrador
         public EstadoFisicoOp EstadoFisico { get; set; }
         public Bateria Bateria { get; set; }
         public Localizacion localizacion { get; set; }
-        public Localizacion localizacionCuartel { get; set; }
+        public Localizacion localizacionCuartel { get; private set; }
         public double velocidad { get; set; }
         public TipoOp tipo { get; set; }
         public int cantKms { get; set; }
@@ -62,8 +61,8 @@ namespace TP_Integrador
             this.Id = IdStatic;                    //Cada vez que se cree un objeto Operador, se le asigana el Id automaticamente
             IdStatic++;                          //La variable estatica incrementa automaticamente para asignarle otro Id diferente
                                                  //al siguiente Operador que se cree
+            this.localizacionCuartel = new Localizacion(localizacion.filaProperty, localizacion.columnaProperty); // Asignamos ademas la localizacion de su cuartel correspondiente
             this.localizacion = localizacion;
-            this.localizacionCuartel = this.localizacion; // Asignamos ademas la localizacion de su cuartel correspondiente
             this.EstadoLogico = EstadoLogicoOp.BuenEstado;
             this.EstadoFisico = EstadoFisicoOp.BuenEstado;
             this.CargaActual = 0;
@@ -89,12 +88,12 @@ namespace TP_Integrador
                 bool continuarCamino = true;
                 Stack<Nodo> camino = determinaCamino(localizacion, mapa); /// Aqui ya tendriamos la pila de los nodos Camino
 
-                if (camino.Count() != 0 && localizacion != null)
+                if (camino.Count != 0 && localizacion != null)
                 {
                     //////////////////////////////////////////////////////////////////////////////////////////////
                     ///
                     this.cantInstrucciones++;
-                    while (camino.Count() != 0 && continuarCamino)
+                    while (camino.Count != 0 && continuarCamino)
                     {
 
 
@@ -104,11 +103,11 @@ namespace TP_Integrador
 
                             this.localizacion.filaProperty = nodo.fila;
                             this.localizacion.columnaProperty = nodo.columna;
+                            //this.localizacion = new Localizacion(nodo.fila, nodo.columna);
                             this.cantKms++;
-
                             //bateria
                             Bateria.DescargaPorMovimiento(this.velocidad);//descarga cada vez que se mueve
-                            cantEnergiaConsumida += (this.Bateria.bateriaMaxima - (1000 / this.velocidad));
+                            cantEnergiaConsumida += (1000 / this.velocidad);
 
                             cargarUltimaLocalizacion(new Localizacion(nodo.fila, nodo.columna));
 
@@ -117,14 +116,14 @@ namespace TP_Integrador
                             {
 
                                 ProbabilidadesDeDanio(5);
-                                this.cantDanios++;
+                                
                             }
 
                             if (nodo.tipo is VertederoElectronico)//si es vertedero electronico
                             {
                                 Bateria.estado = EstadoBateria.CargaReducida;
                                 Bateria.ReducirCarga();
-                                this.cantDanios++;
+                                Console.WriteLine($"El operador{this.GetType().Name} atravezó un vertedero electronico \nsufrió una reduccion de la carga maxima de la bateria");
                             }
                         }
                         else
@@ -143,6 +142,13 @@ namespace TP_Integrador
             }
             else Console.WriteLine("El operador se encuentra en STANDBY");
         }
+
+
+
+
+
+
+
 
 
         private Stack<Nodo> determinaCamino(Localizacion destino, Mapa mapa)
@@ -164,6 +170,7 @@ namespace TP_Integrador
             return camino;
 
         }
+
 
 
 
@@ -485,6 +492,7 @@ namespace TP_Integrador
             {
                 IDanioOperador danio = DanioOperador.DanioAleatorio();
                 danio.ProducirDanio(this);
+                this.cantDanios++;
             }
         }
 
@@ -516,15 +524,16 @@ namespace TP_Integrador
             "\nEstado logico: " + EstadoLogico +
             "\nEstado fisico: " + EstadoFisico +
             "\nVelocidad: " + velocidad +
+            "\nBateria maxima: " + Bateria.bateriaMaxima +
+            "\nBateria actual: " + Bateria.bateriaActual +
+            "\nEstado de bateria: " + Bateria.estado +
+            "\nLocalizacion del operador: " + localizacion.filaProperty + " - " + localizacion.columnaProperty +
+            "\nTipo de operador: " + tipo +
             "\nCantidad de km recorridos: " + cantKms +
             "\nCantidad de energia consumida: " + cantEnergiaConsumida +
             "\nCantidad de carga transportada: " + cantCargaTransportada +
             "\nCantidad de instrucciones: " + cantInstrucciones +
             "\nCantidad de danios: " + cantDanios +
-            "\nTipo de operador: " + tipo +
-            "\nBateria maxima: " + Bateria.bateriaMaxima +
-            "\nBateria actual: " + Bateria.bateriaActual +
-            "\nLocalizacion del operador: " + localizacion.filaProperty + " - " + localizacion.columnaProperty +
             "\nCantidad de ultimas localizaciones visitadas: " + this.ultimasUbicVisitadas.Count());
             if (this.ultimasUbicVisitadas.Count() != 0)
             {
