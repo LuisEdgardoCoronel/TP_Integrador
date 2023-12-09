@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using TP_Integrador.Operadores;
 
 namespace TP_Integrador
 {
@@ -30,7 +29,6 @@ namespace TP_Integrador
             this.velocidad = 100;
             this.tipo = TipoOp.Terrestre;
             this.CargaActual = this.CargaMax;
-
         }
     }
 }
